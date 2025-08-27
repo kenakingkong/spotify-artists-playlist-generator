@@ -20,7 +20,7 @@ export default function useWizardContext() {
 }
 
 export function WizardContextProvider({ children }: { children: ReactNode }) {
-  const [step, setStep] = useState<string>(STEPS.LOGIN.id);
+  const [step, setStep] = useState<string>(STEPS.SIGNIN.id);
 
   const hasNextStep = () => !!STEPS[step].next;
   const nextStep = () => setStep((prev) => STEPS[prev].next || prev);

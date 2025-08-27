@@ -1,8 +1,8 @@
-import { StepArtists, StepLogin, StepPlaylist, StepSongs } from "../steps";
+import { StepArtists, StepSignIn, StepPlaylist, StepSongs } from "../steps";
 import { STEPS } from "./wizardConfig";
 
 export const STEP_COMPONENTS: Record<string, React.FC> = {
-  [STEPS.LOGIN.id]: StepLogin,
+  [STEPS.SIGNIN.id]: StepSignIn,
   [STEPS.ARTISTS.id]: StepArtists,
   [STEPS.SONGS.id]: StepSongs,
   [STEPS.PLAYLIST.id]: StepPlaylist,

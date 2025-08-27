@@ -16,13 +16,13 @@ const geistMono = Geist_Mono({
 export default function Home() {
   return (
     <div className={`${geistSans.className} ${geistMono.className}`}>
-      <header className="p-4">
+      <header className="p-4 max-w-xl mx-auto">
         <Header />
       </header>
-      <main className="p-4">
+      <main className="p-4 max-w-xl mx-auto">
         <Wizard />
       </main>
-      <footer className="p-4">
+      <footer className="p-4 max-w-xl mx-auto">
         <Footer />
       </footer>
     </div>

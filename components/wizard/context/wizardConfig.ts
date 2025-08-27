@@ -1,5 +1,3 @@
-import { StepArtists, StepLogin, StepPlaylist, StepSongs } from "../steps";
-
 export interface IStep {
   index: number;
   id: string;
@@ -14,13 +12,13 @@ export interface ISteps {
 }
 
 export const STEPS: ISteps = {
-  LOGIN: {
+  SIGNIN: {
     index: 0,
-    id: "LOGIN",
+    id: "SIGNIN",
     prev: null,
     next: "ARTISTS",
-    shortLabel: "Login",
-    longLabel: "Login to Spotify",
+    shortLabel: "SIGNIN",
+    longLabel: "SIGNIN to Spotify",
   },
   ARTISTS: {
     index: 1,

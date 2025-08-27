@@ -32,7 +32,7 @@ export default function WizardComponent() {
             exitActive: TRANSITION_CLASSES.EXIT_ACTIVE,
           }}
         >
-          <div ref={nodeRef} className="absolute w-full">
+          <div ref={nodeRef} className="">
             <StepComponent />
           </div>
         </CSSTransition>

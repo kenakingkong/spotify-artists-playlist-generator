@@ -1,3 +1,5 @@
+import WizardLayout from "../WizardLayout";
+
 export default function StepArtists() {
-  return <div>Artists</div>;
+  return <WizardLayout>Artists</WizardLayout>;
 }
