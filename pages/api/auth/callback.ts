@@ -1,47 +1,52 @@
-import {
-  SPOTIFY_ACCESS_TOKEN_COOKIE_NAME,
-  SPOTIFY_ENDPOINTS,
-  SPOTIFY_LOGGED_IN_COOKIE_NAME,
-  SPOTIFY_REFRESH_TOKEN_COOKIE_NAME,
-} from "@/lib/spotifyConfig";
-import { getSpotifyCookieOptions } from "@/lib/spotifyToken";
-import { SpotifyTokenResponse } from "@/types/auth";
+import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
+import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
 import axios from "axios";
-import { serialize } from "cookie";
+import { serialize, parse } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
+import { SpotifyTokenResponse } from "@/types/auth";
+
+const clientId = process.env.SPOTIFY_CLIENT_ID;
+const redirectUri = SPOTIFY_ENDPOINTS.callback;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { code, error } = req.query;
+  const cookies = parse(req.headers.cookie || "");
+  const codeVerifier = cookies[SPOTIFY_COOKIE.CODE_VERIFIER];
 
-  const clientId = process.env.SPOTIFY_CLIENT_ID!;
-  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET!;
-  const redirectUri = SPOTIFY_ENDPOINTS.callback;
+  if (!clientId) {
+    throw new Error("Missing Spotify client credentials");
+  }
+
+  if (!code || typeof code !== "string") {
+    return res.status(400).json({ error: "Missing authorization code" });
+  }
+
+  if (error === "access_denied") {
+    return res.redirect("/");
+  }
+
+  if (!codeVerifier) {
+    return res.status(400).json({ error: "Missing code_verifier cookie" });
+  }
+
+  console.log(`---CALLBACK---`);
+  console.log(`codeVerifier ${codeVerifier}`);
 
   try {
-    if (!clientId || !clientSecret) {
-      throw new Error("Missing Spotify client credentials");
-    }
-
-    if (error === "access_denied") {
-      return res.redirect("/");
-    }
-
-    if (!code) {
-      return res.status(400).json({ error: "Missing authorization code" });
-    }
+    const urlParams = new URLSearchParams({
+      grant_type: "authorization_code",
+      redirect_uri: redirectUri,
+      client_id: clientId!,
+      code: code as string,
+      code_verifier: codeVerifier,
+    });
 
     const response = await axios.post<SpotifyTokenResponse>(
       SPOTIFY_ENDPOINTS.token,
-      new URLSearchParams({
-        grant_type: "authorization_code",
-        code: code as string,
-        redirect_uri: redirectUri,
-        client_id: clientId,
-        client_secret: clientSecret,
-      }).toString(),
+      urlParams.toString(),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
 
@@ -49,17 +54,17 @@ export default async function handler(
 
     res.setHeader("Set-Cookie", [
       serialize(
-        SPOTIFY_ACCESS_TOKEN_COOKIE_NAME,
+        SPOTIFY_COOKIE.ACCESS_TOKEN,
         access_token,
         getSpotifyCookieOptions(true, expires_in)
       ),
       serialize(
-        SPOTIFY_REFRESH_TOKEN_COOKIE_NAME,
+        SPOTIFY_COOKIE.REFRESH_TOKEN,
         refresh_token ?? "",
         getSpotifyCookieOptions(true)
       ),
       serialize(
-        SPOTIFY_LOGGED_IN_COOKIE_NAME,
+        SPOTIFY_COOKIE.LOGGED_IN,
         "true",
         getSpotifyCookieOptions(false)
       ),

@@ -14,6 +14,9 @@ dependencies:
   cookie:
     specifier: ^1.0.2
     version: 1.0.2
+  crpyto:
+    specifier: 0.0.1-security
+    version: 0.0.1-security
   js-cookie:
     specifier: ^3.0.5
     version: 3.0.5
@@ -1386,6 +1389,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crpyto@0.0.1-security:
+    resolution: {integrity: sha512-zWk4mo/jJt3EVmso7CM065G6A3ejQF4xRWUsaUSXLfvhOEr4SnHYEDVpeHIG5yA6TP028mFgXTvOJFYW00tSJQ==}
+    dev: false
 
   /csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}

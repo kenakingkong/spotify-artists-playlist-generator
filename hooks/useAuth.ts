@@ -1,4 +1,4 @@
-import { SPOTIFY_LOGGED_IN_COOKIE_NAME } from "@/lib/spotifyConfig";
+import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
 import { useEffect, useState } from "react";
 
 export function useAuth() {
@@ -6,7 +6,7 @@ export function useAuth() {
 
   useEffect(() => {
     const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${SPOTIFY_LOGGED_IN_COOKIE_NAME}=`);
+    const parts = value.split(`; ${SPOTIFY_COOKIE.LOGGED_IN}=`);
     setIsLoggedIn(parts.length === 2);
   }, []);
 
