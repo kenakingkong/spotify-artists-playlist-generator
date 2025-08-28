@@ -32,9 +32,6 @@ export default async function handler(
     return res.status(400).json({ error: "Missing code_verifier cookie" });
   }
 
-  console.log(`---CALLBACK---`);
-  console.log(`codeVerifier ${codeVerifier}`);
-
   try {
     const urlParams = new URLSearchParams({
       grant_type: "authorization_code",

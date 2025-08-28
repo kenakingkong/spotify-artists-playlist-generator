@@ -35,10 +35,6 @@ export default async function handler(
     })
   );
 
-  console.log("---LOGIN---");
-  console.log(`codeVerifier ${codeVerifier}`);
-  console.log(`codeChallenge ${codeChallenge}`);
-
   const urlParams = new URLSearchParams({
     response_type: "code",
     client_id: clientId!,
