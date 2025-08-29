@@ -6,7 +6,7 @@ import { withSpotifyAuth } from "@/lib/spotify/auth";
 
 import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
 
-async function getProfile(
+async function GET(
   req: NextApiRequest,
   res: NextApiResponse,
   accessToken?: string | null
@@ -22,4 +22,4 @@ async function getProfile(
   }
 }
 
-export default withSpotifyAuth(getProfile);
+export default withSpotifyAuth(GET);

@@ -5,7 +5,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
-import handler from "@/pages/api/spotify/get-profile";
+import handler from "@/pages/api/spotify/users/profile";
 
 import { ERRORS } from "@/lib/errors";
 import { createMockApi } from "@/tests/utils/mockApi";
@@ -22,7 +22,7 @@ jest.mock("@/lib/spotify/auth", () => {
   };
 });
 
-describe("/api/spotify/get-profile", () => {
+describe("/api/spotify/users/get", () => {
   it("returns 200 with profile data", async () => {
     await withMockSpotifyClientId(async () => {
       const { req, res } = createMockApi();
