@@ -12,5 +12,5 @@ export const ERRORS = {
   MISSING_REFRESH_TOKEN: "Missing refresh token",
   FAILED_REFRESH: "Failed to refresh token",
 
-  SPOTIFY_PROFILE: "Failed to fetch Spotify profile",
+  SPOTIFY_DATA: "Failed to fetch data from Spotify",
 };

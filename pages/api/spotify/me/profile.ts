@@ -18,7 +18,7 @@ async function GET(
 
     return res.status(200).json({ data: response.data });
   } catch (err: any) {
-    return res.status(500).json({ error: ERRORS.SPOTIFY_PROFILE });
+    return res.status(500).json({ error: ERRORS.SPOTIFY_DATA });
   }
 }
 

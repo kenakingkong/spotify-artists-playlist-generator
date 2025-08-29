@@ -57,7 +57,7 @@ describe("/api/spotify/users/get", () => {
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({
-      error: ERRORS.SPOTIFY_PROFILE,
+      error: ERRORS.SPOTIFY_DATA,
     });
   });
 });
