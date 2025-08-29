@@ -7,7 +7,7 @@ import axios from "axios";
 
 import handler from "@/pages/api/auth/callback";
 
-import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
+import { SPOTIFY_COOKIES } from "@/lib/spotify/config";
 import { ERRORS } from "@/lib/errors";
 import { createMockApi } from "@/tests/utils/mockApi";
 import { MOCK_ACCESS_TOKEN, MOCK_REFRESH_TOKEN } from "@/tests/utils/mockAuth";
@@ -68,7 +68,7 @@ describe("/api/auth/callback", () => {
     await withMockSpotifyClientId(async () => {
       const { req, res, redirectMock } = createMockApi();
       req.query = { code: "FAKE_CODE" };
-      req.headers = { cookie: `${SPOTIFY_COOKIE.CODE_VERIFIER}=FAKE_VERIFIER` };
+      req.headers = { cookie: `${SPOTIFY_COOKIES.CODE_VERIFIER}=FAKE_VERIFIER` };
 
       mockedAxios.post.mockResolvedValue({
         data: {
@@ -84,12 +84,12 @@ describe("/api/auth/callback", () => {
         "Set-Cookie",
         expect.arrayContaining([
           expect.stringContaining(
-            `${SPOTIFY_COOKIE.ACCESS_TOKEN}=${MOCK_ACCESS_TOKEN}`
+            `${SPOTIFY_COOKIES.ACCESS_TOKEN}=${MOCK_ACCESS_TOKEN}`
           ),
           expect.stringContaining(
-            `${SPOTIFY_COOKIE.REFRESH_TOKEN}=${MOCK_REFRESH_TOKEN}`
+            `${SPOTIFY_COOKIES.REFRESH_TOKEN}=${MOCK_REFRESH_TOKEN}`
           ),
-          expect.stringContaining(`${SPOTIFY_COOKIE.LOGGED_IN}=true`),
+          expect.stringContaining(`${SPOTIFY_COOKIES.LOGGED_IN}=true`),
         ])
       );
 
@@ -100,7 +100,7 @@ describe("/api/auth/callback", () => {
   it("returns 500 if axios request fails", async () => {
     const { req, res } = createMockApi();
     req.query = { code: "FAKE_CODE" };
-    req.headers = { cookie: `${SPOTIFY_COOKIE.CODE_VERIFIER}=FAKE_VERIFIER` };
+    req.headers = { cookie: `${SPOTIFY_COOKIES.CODE_VERIFIER}=FAKE_VERIFIER` };
 
     mockedAxios.post.mockRejectedValue(new Error());
 

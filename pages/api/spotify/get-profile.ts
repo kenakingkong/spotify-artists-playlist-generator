@@ -3,7 +3,8 @@ import axios from "axios";
 
 import { ERRORS } from "@/lib/errors";
 import { withSpotifyAuth } from "@/lib/spotify/auth";
-import { SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
+
+import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
 
 async function getProfile(
   req: NextApiRequest,
@@ -11,7 +12,7 @@ async function getProfile(
   accessToken?: string | null
 ) {
   try {
-    const response = await axios.get(SPOTIFY_ENDPOINTS.me, {
+    const response = await axios.get(SPOTIFY_API_ENDPOINTS.profile, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 

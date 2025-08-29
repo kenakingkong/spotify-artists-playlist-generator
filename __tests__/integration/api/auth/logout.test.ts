@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 import handler from "@/pages/api/auth/logout";
 
-import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
+import { SPOTIFY_COOKIES } from "@/lib/spotify/config";
 import { createMockApi } from "@/tests/utils/mockApi";
 
 describe("/api/auth/logout", () => {
@@ -18,10 +18,10 @@ describe("/api/auth/logout", () => {
     expect(res.setHeader).toHaveBeenCalledWith(
       "Set-Cookie",
       expect.arrayContaining([
-        expect.stringContaining(`${SPOTIFY_COOKIE.CODE_VERIFIER}=`),
-        expect.stringContaining(`${SPOTIFY_COOKIE.ACCESS_TOKEN}=`),
-        expect.stringContaining(`${SPOTIFY_COOKIE.REFRESH_TOKEN}=`),
-        expect.stringContaining(`${SPOTIFY_COOKIE.LOGGED_IN}=`),
+        expect.stringContaining(`${SPOTIFY_COOKIES.CODE_VERIFIER}=`),
+        expect.stringContaining(`${SPOTIFY_COOKIES.ACCESS_TOKEN}=`),
+        expect.stringContaining(`${SPOTIFY_COOKIES.REFRESH_TOKEN}=`),
+        expect.stringContaining(`${SPOTIFY_COOKIES.LOGGED_IN}=`),
       ])
     );
 

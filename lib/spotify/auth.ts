@@ -1,6 +1,6 @@
 import axios from "axios";
 import { parse } from "cookie";
-import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "./config";
+import { SPOTIFY_COOKIES, SPOTIFY_AUTH_ENDPOINTS } from "./config";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ERRORS } from "../errors";
 
@@ -31,12 +31,12 @@ export async function getSpotifyToken(
   req: NextApiRequest
 ): Promise<string | null> {
   const cookies = parse(req.headers.cookie || "");
-  let accessToken = cookies[SPOTIFY_COOKIE.ACCESS_TOKEN];
+  let accessToken = cookies[SPOTIFY_COOKIES.ACCESS_TOKEN];
 
   if (!accessToken) {
     try {
       const refreshRes = await axios.get<{ access_token: string }>(
-        SPOTIFY_ENDPOINTS.refresh,
+        SPOTIFY_AUTH_ENDPOINTS.refresh,
         { headers: { cookie: req.headers.cookie } }
       );
       accessToken = refreshRes.data.access_token;

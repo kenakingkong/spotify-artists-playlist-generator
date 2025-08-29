@@ -8,14 +8,14 @@ import {
 } from "@/lib/auth/pkce";
 import { ERRORS } from "@/lib/errors";
 import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
-import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
+import { SPOTIFY_COOKIES, SPOTIFY_AUTH_ENDPOINTS } from "@/lib/spotify/config";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
-  const redirectUri = SPOTIFY_ENDPOINTS.callback;
+  const redirectUri = SPOTIFY_AUTH_ENDPOINTS.callback;
   const scope =
     "user-read-private user-read-email user-top-read playlist-modify-public";
 
@@ -29,7 +29,7 @@ export default async function handler(
   res.setHeader(
     "Set-Cookie",
     serialize(
-      SPOTIFY_COOKIE.CODE_VERIFIER,
+      SPOTIFY_COOKIES.CODE_VERIFIER,
       codeVerifier,
       getSpotifyCookieOptions(true, 300)
     )
@@ -44,6 +44,6 @@ export default async function handler(
     code_challenge: codeChallenge,
   });
 
-  const authUrl = `${SPOTIFY_ENDPOINTS.authorize}?${urlParams.toString()}`;
+  const authUrl = `${SPOTIFY_AUTH_ENDPOINTS.authorize}?${urlParams.toString()}`;
   res.redirect(authUrl);
 }

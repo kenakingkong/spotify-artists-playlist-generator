@@ -11,7 +11,7 @@ import { ERRORS } from "@/lib/errors";
 import { createMockApi } from "@/tests/utils/mockApi";
 import { withMockSpotifyClientId } from "@/tests/utils/mockEnv";
 import { expectMissingSpotifyClientId } from "@/tests/utils/env";
-import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
+import { SPOTIFY_COOKIES } from "@/lib/spotify/config";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -40,7 +40,7 @@ describe("/api/auth/refresh", () => {
       const { req, res } = createMockApi();
       req.query = {};
       req.headers = {
-        cookie: `${SPOTIFY_COOKIE.REFRESH_TOKEN}=NEW_REFRESH_TOKEN`,
+        cookie: `${SPOTIFY_COOKIES.REFRESH_TOKEN}=NEW_REFRESH_TOKEN`,
       };
 
       mockedAxios.post.mockResolvedValueOnce({
@@ -57,12 +57,12 @@ describe("/api/auth/refresh", () => {
         "Set-Cookie",
         expect.arrayContaining([
           expect.stringContaining(
-            `${SPOTIFY_COOKIE.ACCESS_TOKEN}=NEW_ACCESS_TOKEN`
+            `${SPOTIFY_COOKIES.ACCESS_TOKEN}=NEW_ACCESS_TOKEN`
           ),
           expect.stringContaining(
-            `${SPOTIFY_COOKIE.REFRESH_TOKEN}=NEW_REFRESH_TOKEN`
+            `${SPOTIFY_COOKIES.REFRESH_TOKEN}=NEW_REFRESH_TOKEN`
           ),
-          expect.stringContaining(`${SPOTIFY_COOKIE.LOGGED_IN}=true`),
+          expect.stringContaining(`${SPOTIFY_COOKIES.LOGGED_IN}=true`),
         ])
       );
 

@@ -4,7 +4,7 @@
 
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSpotifyCookieOptions, withSpotifyAuth } from "@/lib/spotify/auth";
-import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
+import { SPOTIFY_COOKIES } from "@/lib/spotify/config";
 
 describe("unit/lib/spotify/auth tests", () => {
   it("getSpotifyCookieOptions should return a string", () => {
@@ -29,7 +29,7 @@ describe("unit/lib/spotify/auth tests", () => {
     // Set the cookie on the request
     req = {
       headers: {
-        cookie: `${SPOTIFY_COOKIE.ACCESS_TOKEN}=GOOD_TOKEN`,
+        cookie: `${SPOTIFY_COOKIES.ACCESS_TOKEN}=GOOD_TOKEN`,
       },
     };
 

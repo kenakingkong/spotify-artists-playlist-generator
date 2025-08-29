@@ -3,7 +3,7 @@ import axios from "axios";
 import { serialize, parse } from "cookie";
 
 import { ERRORS } from "@/lib/errors";
-import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
+import { SPOTIFY_COOKIES, SPOTIFY_AUTH_ENDPOINTS } from "@/lib/spotify/config";
 import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
 import { SpotifyTokenResponse } from "@/types/auth";
 
@@ -12,11 +12,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
-  const redirectUri = SPOTIFY_ENDPOINTS.callback;
+  const redirectUri = SPOTIFY_AUTH_ENDPOINTS.callback;
 
   const { code, error } = req.query;
   const cookies = parse(req.headers.cookie || "");
-  const codeVerifier = cookies[SPOTIFY_COOKIE.CODE_VERIFIER];
+  const codeVerifier = cookies[SPOTIFY_COOKIES.CODE_VERIFIER];
 
   if (!clientId) {
     throw new Error(ERRORS.MISSING_CLIENT_ID);
@@ -44,7 +44,7 @@ export default async function handler(
     });
 
     const response = await axios.post<SpotifyTokenResponse>(
-      SPOTIFY_ENDPOINTS.token,
+      SPOTIFY_AUTH_ENDPOINTS.token,
       urlParams.toString(),
       { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
@@ -53,17 +53,17 @@ export default async function handler(
 
     res.setHeader("Set-Cookie", [
       serialize(
-        SPOTIFY_COOKIE.ACCESS_TOKEN,
+        SPOTIFY_COOKIES.ACCESS_TOKEN,
         access_token,
         getSpotifyCookieOptions(true, expires_in)
       ),
       serialize(
-        SPOTIFY_COOKIE.REFRESH_TOKEN,
+        SPOTIFY_COOKIES.REFRESH_TOKEN,
         refresh_token ?? "",
         getSpotifyCookieOptions(true)
       ),
       serialize(
-        SPOTIFY_COOKIE.LOGGED_IN,
+        SPOTIFY_COOKIES.LOGGED_IN,
         "true",
         getSpotifyCookieOptions(false)
       ),
