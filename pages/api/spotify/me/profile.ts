@@ -3,7 +3,6 @@ import axios from "axios";
 
 import { ERRORS } from "@/lib/errors";
 import { withSpotifyAuth } from "@/lib/spotify/auth";
-
 import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
 
 async function GET(
