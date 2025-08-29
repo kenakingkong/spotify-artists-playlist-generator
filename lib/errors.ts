@@ -13,4 +13,6 @@ export const ERRORS = {
   FAILED_REFRESH: "Failed to refresh token",
 
   SPOTIFY_DATA: "Failed to fetch data from Spotify",
+
+  ARTIST_NOT_FOUND: "Artist not found",
 };

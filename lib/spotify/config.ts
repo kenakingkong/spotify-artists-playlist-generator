@@ -19,7 +19,7 @@ export const SPOTIFY_API_ENDPOINTS = {
     `${SPOTIFY_API_BASE}/playlists/${playlistId}/tracks`,
   searchArtists: (query: string) =>
     `${SPOTIFY_API_BASE}/search?type=artist&q=${query}`,
-  artistTopTracks: (artistId: number) =>
+  artistTopTracks: (artistId: string) =>
     `${SPOTIFY_API_BASE}/artists/${artistId}/top-tracks`,
 };
 
