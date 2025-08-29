@@ -5,7 +5,7 @@ export const ERRORS = {
   UNAUTHORIZED: "Unauthorized",
 
   MISSING_AUTH_CODE: "Missing authorization code",
-  MISSING_CLIENT_ID: "Missing Spotify client credentials",
+  MISSING_CREDENTIALS: "Missing Spotify client credentials",
   MISSING_CODE_VERIFIER: "Missing code verifier cookie",
 
   INVALID_TOKEN: "Invalid access token",

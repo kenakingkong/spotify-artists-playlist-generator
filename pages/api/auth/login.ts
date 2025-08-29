@@ -1,14 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { serialize } from "cookie";
 
-import {
-  CODE_CHALLENGE_METHOD,
-  generateCodeChallenge,
-  generateRandomString,
-} from "@/lib/auth/pkce";
 import { ERRORS } from "@/lib/errors";
-import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
-import { SPOTIFY_COOKIES, SPOTIFY_AUTH_ENDPOINTS } from "@/lib/spotify/config";
+import { SPOTIFY_AUTH_ENDPOINTS } from "@/lib/spotify/config";
+import generateRandomString from "@/utils/generateRandomString";
+
+const DEFAULT_SPOTIFY_SCOPE =
+  "user-read-private user-read-email user-top-read playlist-modify-public";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,32 +13,19 @@ export default async function handler(
 ) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const redirectUri = SPOTIFY_AUTH_ENDPOINTS.callback;
-  const scope =
-    "user-read-private user-read-email user-top-read playlist-modify-public";
-
-  const codeVerifier = generateRandomString();
-  const codeChallenge = generateCodeChallenge(codeVerifier);
+  const scope = DEFAULT_SPOTIFY_SCOPE;
+  const state = generateRandomString(16);
 
   if (!clientId) {
-    throw new Error(ERRORS.MISSING_CLIENT_ID);
+    throw new Error(ERRORS.MISSING_CREDENTIALS);
   }
-
-  res.setHeader(
-    "Set-Cookie",
-    serialize(
-      SPOTIFY_COOKIES.CODE_VERIFIER,
-      codeVerifier,
-      getSpotifyCookieOptions(true, 300)
-    )
-  );
 
   const urlParams = new URLSearchParams({
     response_type: "code",
-    client_id: clientId!,
+    client_id: clientId,
     scope,
-    redirect_uri: redirectUri!,
-    code_challenge_method: CODE_CHALLENGE_METHOD,
-    code_challenge: codeChallenge,
+    redirect_uri: redirectUri,
+    state,
   });
 
   const authUrl = `${SPOTIFY_AUTH_ENDPOINTS.authorize}?${urlParams.toString()}`;

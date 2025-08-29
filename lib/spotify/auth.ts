@@ -4,7 +4,7 @@ import { SPOTIFY_COOKIES, SPOTIFY_AUTH_ENDPOINTS } from "./config";
 import { NextApiRequest, NextApiResponse } from "next";
 import { ERRORS } from "../errors";
 
-const DEFAULT_EXPIRES_IN = 300; //60 * 60 * 24 * 30;
+const DEFAULT_EXPIRES_IN = 60 * 60 * 24 * 30; // 2592000
 
 type THandler = (
   req: NextApiRequest,

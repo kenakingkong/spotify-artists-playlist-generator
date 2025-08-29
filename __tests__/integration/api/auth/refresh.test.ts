@@ -8,10 +8,10 @@ import axios from "axios";
 import handler from "@/pages/api/auth/refresh";
 
 import { ERRORS } from "@/lib/errors";
+import { SPOTIFY_COOKIES } from "@/lib/spotify/config";
 import { createMockApi } from "@/tests/utils/mockApi";
 import { withMockSpotifyClientId } from "@/tests/utils/mockEnv";
 import { expectMissingSpotifyClientId } from "@/tests/utils/env";
-import { SPOTIFY_COOKIES } from "@/lib/spotify/config";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;

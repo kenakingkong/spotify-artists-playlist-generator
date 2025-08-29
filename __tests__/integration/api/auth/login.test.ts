@@ -14,21 +14,15 @@ import {
   withMockSpotifyClientId,
 } from "@/tests/utils/mockEnv";
 
-// Mock generateRandomString and generateCodeChallenge for predictable output
-jest.mock("@/lib/auth/pkce", () => ({
-  CODE_CHALLENGE_METHOD: "S256",
-  generateRandomString: jest.fn().mockReturnValue("FAKE_VERIFIER"),
-  generateCodeChallenge: jest.fn().mockReturnValue("FAKE_CHALLENGE"),
-}));
+
 
 describe("/api/auth/login", () => {
-  it("sets a code_verifier cookie and redirects to Spotify authorize URL", async () => {
+  it("redirects to Spotify authorize URL", async () => {
     await withMockSpotifyClientId(async () => {
       const { req, res, redirectMock } = createMockApi();
 
       await handler(req as NextApiRequest, res as NextApiResponse);
 
-      // Check that it redirects to Spotify with correct query params
       expect(redirectMock).toHaveBeenCalledWith(
         expect.stringContaining(SPOTIFY_AUTH_ENDPOINTS.authorize)
       );
@@ -36,10 +30,7 @@ describe("/api/auth/login", () => {
         expect.stringContaining(`client_id=${MOCK_SPOTIFY_CLIENT_ID}`)
       );
       expect(redirectMock).toHaveBeenCalledWith(
-        expect.stringContaining("code_challenge=FAKE_CHALLENGE")
-      );
-      expect(redirectMock).toHaveBeenCalledWith(
-        expect.stringContaining("code_challenge_method=S256")
+        expect.stringContaining("state=")
       );
     });
   });
@@ -51,6 +42,6 @@ describe("/api/auth/login", () => {
 
     await expect(
       handler(req as NextApiRequest, res as NextApiResponse)
-    ).rejects.toThrow(ERRORS.MISSING_CLIENT_ID);
+    ).rejects.toThrow(ERRORS.MISSING_CREDENTIALS);
   });
 });

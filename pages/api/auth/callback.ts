@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import { serialize, parse } from "cookie";
+import { serialize } from "cookie";
 
 import { ERRORS } from "@/lib/errors";
 import { SPOTIFY_COOKIES, SPOTIFY_AUTH_ENDPOINTS } from "@/lib/spotify/config";
@@ -12,41 +12,49 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
   const redirectUri = SPOTIFY_AUTH_ENDPOINTS.callback;
 
-  const { code, error } = req.query;
-  const cookies = parse(req.headers.cookie || "");
-  const codeVerifier = cookies[SPOTIFY_COOKIES.CODE_VERIFIER];
+  const code = req.query.code || null;
+  const error = req.query.error || null;
+  const state = req.query.state || null;
 
-  if (!clientId) {
-    throw new Error(ERRORS.MISSING_CLIENT_ID);
+  if (!clientId || !clientSecret) {
+    throw new Error(ERRORS.MISSING_CREDENTIALS);
   }
 
   if (error === "access_denied") {
     return res.redirect("/?error=access_denied");
   }
 
-  if (!code || typeof code !== "string") {
-    return res.status(400).json({ error: ERRORS.MISSING_AUTH_CODE });
+  if (state === null) {
+    return res.redirect("/?error=state_mismatch");
   }
 
-  if (!codeVerifier) {
-    return res.status(400).json({ error: ERRORS.MISSING_CODE_VERIFIER });
+  if (!code) {
+    res.status(400).json({ error: ERRORS.MISSING_AUTH_CODE });
   }
+
+  const authHeader = `Basic ${Buffer.from(
+    `${clientId}:${clientSecret}`
+  ).toString("base64")}`;
+
+  const headers = {
+    Authorization: authHeader,
+    "Content-Type": "application/x-www-form-urlencoded",
+  };
+
+  const urlParams = new URLSearchParams({
+    grant_type: "authorization_code",
+    redirect_uri: redirectUri,
+    code: code as string,
+  });
 
   try {
-    const urlParams = new URLSearchParams({
-      grant_type: "authorization_code",
-      redirect_uri: redirectUri,
-      client_id: clientId!,
-      code: code as string,
-      code_verifier: codeVerifier,
-    });
-
     const response = await axios.post<SpotifyTokenResponse>(
       SPOTIFY_AUTH_ENDPOINTS.token,
       urlParams.toString(),
-      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+      { headers }
     );
 
     const { access_token, refresh_token, expires_in } = response.data;

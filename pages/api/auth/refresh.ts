@@ -12,29 +12,31 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
-
   const cookies = parse(req.headers.cookie || "");
+
   const refreshToken = cookies[SPOTIFY_COOKIES.REFRESH_TOKEN];
 
   if (!clientId) {
-    throw new Error(ERRORS.MISSING_CLIENT_ID);
+    throw new Error(ERRORS.MISSING_CREDENTIALS);
   }
 
   if (!refreshToken) {
     return res.status(401).json({ error: ERRORS.MISSING_REFRESH_TOKEN });
   }
 
-  try {
-    const payload = {
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-      client_id: clientId!,
-    };
+  const headers = { "Content-Type": "application/x-www-form-urlencoded" };
 
+  const payload = {
+    grant_type: "refresh_token",
+    refresh_token: refreshToken,
+    client_id: clientId!,
+  };
+
+  try {
     const response = await axios.post<SpotifyTokenResponse>(
       SPOTIFY_AUTH_ENDPOINTS.token,
       payload,
-      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+      { headers }
     );
 
     const { access_token, refresh_token, expires_in } = response.data;
