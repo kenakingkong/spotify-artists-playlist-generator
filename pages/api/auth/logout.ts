@@ -1,5 +1,6 @@
-import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
 import type { NextApiRequest, NextApiResponse } from "next";
+
+import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   res.setHeader("Set-Cookie", [

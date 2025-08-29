@@ -1,21 +1,27 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { parse, serialize } from "cookie";
-import { SpotifyTokenResponse } from "../../../types/auth";
+
+import { ERRORS } from "@/lib/errors";
 import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
 import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
-
-const clientId = process.env.SPOTIFY_CLIENT_ID;
+import { SpotifyTokenResponse } from "@/types/auth";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+
   const cookies = parse(req.headers.cookie || "");
   const refreshToken = cookies[SPOTIFY_COOKIE.REFRESH_TOKEN];
 
+  if (!clientId) {
+    throw new Error(ERRORS.MISSING_CLIENT_ID);
+  }
+
   if (!refreshToken) {
-    return res.status(401).json({ error: "Missing refresh token" });
+    return res.status(401).json({ error: ERRORS.MISSING_REFRESH_TOKEN });
   }
 
   try {
@@ -53,7 +59,6 @@ export default async function handler(
 
     res.status(200).json({ access_token });
   } catch (err: any) {
-    console.error(err.response?.data || err.message);
-    res.status(500).json({ error: "Failed to refresh token" });
+    res.status(500).json({ error: ERRORS.FAILED_REFRESH });
   }
 }

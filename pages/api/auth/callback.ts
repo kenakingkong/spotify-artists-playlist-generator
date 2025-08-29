@@ -1,35 +1,37 @@
-import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
-import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
+import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { serialize, parse } from "cookie";
-import { NextApiRequest, NextApiResponse } from "next";
-import { SpotifyTokenResponse } from "@/types/auth";
 
-const clientId = process.env.SPOTIFY_CLIENT_ID;
-const redirectUri = SPOTIFY_ENDPOINTS.callback;
+import { ERRORS } from "@/lib/errors";
+import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
+import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
+import { SpotifyTokenResponse } from "@/types/auth";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const redirectUri = SPOTIFY_ENDPOINTS.callback;
+
   const { code, error } = req.query;
   const cookies = parse(req.headers.cookie || "");
   const codeVerifier = cookies[SPOTIFY_COOKIE.CODE_VERIFIER];
 
   if (!clientId) {
-    throw new Error("Missing Spotify client credentials");
-  }
-
-  if (!code || typeof code !== "string") {
-    return res.status(400).json({ error: "Missing authorization code" });
+    throw new Error(ERRORS.MISSING_CLIENT_ID);
   }
 
   if (error === "access_denied") {
-    return res.redirect("/");
+    return res.redirect("/?error=access_denied");
+  }
+
+  if (!code || typeof code !== "string") {
+    return res.status(400).json({ error: ERRORS.MISSING_AUTH_CODE });
   }
 
   if (!codeVerifier) {
-    return res.status(400).json({ error: "Missing code_verifier cookie" });
+    return res.status(400).json({ error: ERRORS.MISSING_CODE_VERIFIER });
   }
 
   try {
@@ -69,7 +71,6 @@ export default async function handler(
 
     res.redirect("/");
   } catch (err: any) {
-    console.error(err.response?.data || err.message);
-    res.status(500).send("Authentication failed");
+    res.status(500).json({ error: ERRORS.AUTHENTICATION_FAILED });
   }
 }

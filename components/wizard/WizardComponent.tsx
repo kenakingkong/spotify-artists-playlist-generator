@@ -1,6 +1,6 @@
+import { useRef } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { STEP_COMPONENTS, STEPS, useWizardContext } from "./context";
-import { useRef } from "react";
 
 const TRANSITION_TIMEOUT = 100;
 

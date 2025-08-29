@@ -1,38 +1,38 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+import { serialize } from "cookie";
+
 import {
   CODE_CHALLENGE_METHOD,
   generateCodeChallenge,
   generateRandomString,
 } from "@/lib/auth/pkce";
+import { ERRORS } from "@/lib/errors";
 import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
 import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "@/lib/spotify/config";
-import { serialize } from "cookie";
-import type { NextApiRequest, NextApiResponse } from "next";
-
-const clientId = process.env.SPOTIFY_CLIENT_ID;
-const redirectUri = SPOTIFY_ENDPOINTS.callback;
-const scope =
-  "user-read-private user-read-email user-top-read playlist-modify-public";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const redirectUri = SPOTIFY_ENDPOINTS.callback;
+  const scope =
+    "user-read-private user-read-email user-top-read playlist-modify-public";
+
   const codeVerifier = generateRandomString();
   const codeChallenge = generateCodeChallenge(codeVerifier);
 
   if (!clientId) {
-    throw new Error("Missing Spotify client credentials");
+    throw new Error(ERRORS.MISSING_CLIENT_ID);
   }
 
   res.setHeader(
     "Set-Cookie",
-    serialize(SPOTIFY_COOKIE.CODE_VERIFIER, codeVerifier, {
-      httpOnly: true,
-      path: "/",
-      maxAge: 300,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-    })
+    serialize(
+      SPOTIFY_COOKIE.CODE_VERIFIER,
+      codeVerifier,
+      getSpotifyCookieOptions(true, 300)
+    )
   );
 
   const urlParams = new URLSearchParams({

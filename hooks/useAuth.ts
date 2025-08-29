@@ -1,5 +1,5 @@
-import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
 import { useEffect, useState } from "react";
+import { SPOTIFY_COOKIE } from "@/lib/spotify/config";
 
 export function useAuth() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

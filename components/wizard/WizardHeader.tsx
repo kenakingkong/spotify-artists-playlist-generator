@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
-import { IStep, STEPS, useWizardContext } from "./context";
 import classNames from "classnames";
+import { IStep, STEPS, useWizardContext } from "./context";
 
 export default function WizardHeader() {
   const { step, forceStep } = useWizardContext();

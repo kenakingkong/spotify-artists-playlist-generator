@@ -2,31 +2,34 @@ import axios from "axios";
 import { parse } from "cookie";
 import { SPOTIFY_COOKIE, SPOTIFY_ENDPOINTS } from "./config";
 import { NextApiRequest, NextApiResponse } from "next";
+import { ERRORS } from "../errors";
 
 const DEFAULT_EXPIRES_IN = 300; //60 * 60 * 24 * 30;
 
-type Handler = (
+type THandler = (
   req: NextApiRequest,
   res: NextApiResponse,
-  accessToken: string
+  accessToken?: string | null
 ) => void | Promise<void>;
 
-export function withSpotifyAuth(handler: Handler): Handler {
+export function withSpotifyAuth(handler: THandler): THandler {
   return async (req, res) => {
     try {
       const accessToken = await getSpotifyToken(req);
       if (!accessToken) {
-        return res.status(401).json({ error: "Unauthorized" });
+        return res.status(401).json({ error: ERRORS.UNAUTHORIZED });
       }
 
       return handler(req, res, accessToken);
     } catch (err) {
-      return res.status(401).json({ error: "Unauthorized" });
+      return res.status(401).json({ error: ERRORS.UNAUTHORIZED });
     }
   };
 }
 
-async function getSpotifyToken(req: NextApiRequest): Promise<string | null> {
+export async function getSpotifyToken(
+  req: NextApiRequest
+): Promise<string | null> {
   const cookies = parse(req.headers.cookie || "");
   let accessToken = cookies[SPOTIFY_COOKIE.ACCESS_TOKEN];
 

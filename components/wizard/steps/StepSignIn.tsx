@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+
 import SignInButton from "@/components/auth/SignInButton";
 import { useAuth } from "@/hooks/useAuth";
-import { useEffect } from "react";
+
 import { useWizardContext } from "../context";
 
 export default function StepSignIn() {
