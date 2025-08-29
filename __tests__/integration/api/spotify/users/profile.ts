@@ -5,7 +5,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
-import handler from "@/pages/api/spotify/users/profile";
+import handler from "@/pages/api/spotify/me/profile";
 
 import { ERRORS } from "@/lib/errors";
 import { createMockApi } from "@/tests/utils/mockApi";
