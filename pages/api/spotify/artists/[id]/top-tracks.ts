@@ -8,7 +8,7 @@ import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
 async function GET(
   req: NextApiRequest,
   res: NextApiResponse,
-  accessToken?: string | null
+  accessToken: string
 ) {
   try {
     const id = req.query.id as string;

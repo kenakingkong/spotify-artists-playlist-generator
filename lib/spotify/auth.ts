@@ -9,7 +9,7 @@ const DEFAULT_EXPIRES_IN = 60 * 60 * 24 * 30; // 2592000
 type THandler = (
   req: NextApiRequest,
   res: NextApiResponse,
-  accessToken?: string | null
+  accessToken: string
 ) => void | Promise<void>;
 
 export function withSpotifyAuth(handler: THandler): THandler {
