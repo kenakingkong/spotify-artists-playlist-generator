@@ -1,19 +1,27 @@
-export function isValidUriString(uris?: string): boolean {
-  if (!uris) return false;
-  if (!uris.startsWith("uris=")) return false;
+/**
+ * Filters an array of track URIs to valid Spotify track URIs (must start with 'spotify:track:')
+ * and limits the length to 1-100 items.
+ */
+function validateUris(uris?: string[] | string): string[] {
+  if (!uris) return [];
 
-  const clean = uris.replace(/^uris=/, "").trim();
-  if (!clean) return false;
+  const uriArray: string[] = Array.isArray(uris) ? uris : uris.split(",");
 
-  const arr = clean
-    .split(",")
+  const validURIS = uriArray
     .map((u) => u.trim())
-    .filter(Boolean);
+    .filter((u) => u.startsWith("spotify:track:"))
+    .slice(0, 100);
 
-  if (arr.length < 1 || arr.length > 100) return false;
+  if (!validURIS.length) return [];
 
-  const invalid = arr.find((u) => !u.startsWith("spotify:track:"));
-  if (invalid) return false;
+  return validURIS;
+}
+/**
+ * Converts a list of track URIs into a comma-separated list (String).
+ */
+export function urisToQueryString(uris?: string[]): string {
+  const validUris = validateUris(uris);
 
-  return true;
+  if (!validUris.length) return "";
+  return validUris.join(",");
 }

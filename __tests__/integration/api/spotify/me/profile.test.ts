@@ -10,16 +10,14 @@ import handler from "@/pages/api/spotify/me/profile";
 import { ERRORS } from "@/lib/errors";
 import { createMockApi } from "@/tests/utils/mockApi";
 import { withMockSpotifyClientId } from "@/tests/utils/mockEnv";
+import { MOCK_ACCESS_TOKEN } from "@/tests/utils/mockAuth";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 jest.mock("@/lib/spotify/auth", () => {
   const { mockWithSpotifyAuth } = require("@/tests/utils/mockAuth");
-
-  return {
-    withSpotifyAuth: mockWithSpotifyAuth,
-  };
+  return { withSpotifyAuth: mockWithSpotifyAuth };
 });
 
 describe("/api/spotify/users/get", () => {
@@ -41,7 +39,11 @@ describe("/api/spotify/users/get", () => {
 
       mockedAxios.get.mockResolvedValue({ data: fakeProfile });
 
-      await handler(req as NextApiRequest, res as NextApiResponse);
+      await handler(
+        req as NextApiRequest,
+        res as NextApiResponse,
+        MOCK_ACCESS_TOKEN
+      );
 
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({ data: fakeProfile });
@@ -53,7 +55,7 @@ describe("/api/spotify/users/get", () => {
 
     mockedAxios.get.mockRejectedValue(new Error());
 
-    await handler(req as any, res as any);
+    await handler(req as any, res as any, MOCK_ACCESS_TOKEN);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({

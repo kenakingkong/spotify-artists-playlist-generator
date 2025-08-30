@@ -1,17 +1,13 @@
-import { isValidUriString } from "@/lib/spotify/validate";
+import { urisToQueryString } from "@/lib/spotify/validate";
 
-describe("unit/lib/spotify/validate tests", () => {
-  it("validateUrisString returns true if valid", () => {
-    const str =
-      "uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:track:1301WleyT98MSxVHPZCA6M";
-
-    expect(isValidUriString(str)).toBe(true);
+describe("/unit/lib/spotify/validate: urisToQueryString", () => {
+  it("converts an array of URIs into a Spotify query string", () => {
+    const uris = ["spotify:track:1", "spotify:track:2"];
+    const result = urisToQueryString(uris);
+    expect(result).toBe("spotify:track:1,spotify:track:2");
   });
 
-  it("validateUrisString returns false with episode", () => {
-    const str =
-      "uris=spotify:track:4iV5W9uYEdYUVa79Axb7Rh, spotify:episode:512ojhOuo1ktJprKbVcKyQ";
-
-    expect(isValidUriString(str)).toBe(false);
+  it("returns empty string for empty array", () => {
+    expect(urisToQueryString([])).toBe("");
   });
 });
