@@ -17,5 +17,5 @@ export const ERRORS = {
   ARTIST_NOT_FOUND: "Artist not found",
   MISSING_USER_ID: "Missing User ID",
   REQUIRE_PLAYLIST_NAME: "Playlist name is required",
-
+  INVALID_TRACKS: "Invalid Track IDs",
 };

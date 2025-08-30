@@ -4,29 +4,30 @@ import axios from "axios";
 import { ERRORS } from "@/lib/errors";
 import { withSpotifyAuth } from "@/lib/spotify/auth";
 import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
+import { isValidUriString } from "@/lib/spotify/validate";
 
 async function POST(
   req: NextApiRequest,
   res: NextApiResponse,
-  accessToken?: string | null
+  accessToken: string
 ) {
   try {
-    const { userId, name } = req.body;
+    const id = req.query.id as string;
+    const uris = req.body.uris;
 
-    if (!userId) {
-      return res.status(400).json({ error: ERRORS.MISSING_USER_ID });
+    if (!isValidUriString(uris)) {
+      return res.status(400).json({ data: ERRORS.INVALID_TRACKS });
     }
 
-    if (!name?.trim()) {
-      return res.status(400).json({ error: ERRORS.REQUIRE_PLAYLIST_NAME });
-    }
+    const endpoint = SPOTIFY_API_ENDPOINTS.playlistTracks(id);
 
-    const endpoint = SPOTIFY_API_ENDPOINTS.userPlaylists(userId);
-    const payload = { name, public: true };
-
-    const response = await axios.post(endpoint, payload, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const response = await axios.post(
+      endpoint,
+      { uris },
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
 
     return res.status(201).json({ data: response.data });
   } catch (err: any) {

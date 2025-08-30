@@ -15,7 +15,7 @@ export const SPOTIFY_API_ENDPOINTS = {
   userTopArtists: `${SPOTIFY_API_BASE}/me/top/artists`,
   userPlaylists: (userId: string) =>
     `${SPOTIFY_API_BASE}/users/${userId}/playlists`,
-  userPlaylistTracks: (playlistId: string) =>
+  playlistTracks: (playlistId: string) =>
     `${SPOTIFY_API_BASE}/playlists/${playlistId}/tracks`,
   searchArtists: (query: string) =>
     `${SPOTIFY_API_BASE}/search?type=artist&q=${query}`,
