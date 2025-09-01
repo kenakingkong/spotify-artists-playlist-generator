@@ -5,7 +5,7 @@ import { parse, serialize } from "cookie";
 import { ERRORS } from "@/lib/errors";
 import { SPOTIFY_COOKIES, SPOTIFY_AUTH_ENDPOINTS } from "@/lib/spotify/config";
 import { getSpotifyCookieOptions } from "@/lib/spotify/auth";
-import { SpotifyTokenResponse } from "@/types/auth";
+import { ISpotifyTokenResponse } from "@/types/auth";
 
 export default async function handler(
   req: NextApiRequest,
@@ -33,7 +33,7 @@ export default async function handler(
   };
 
   try {
-    const response = await axios.post<SpotifyTokenResponse>(
+    const response = await axios.post<ISpotifyTokenResponse>(
       SPOTIFY_AUTH_ENDPOINTS.token,
       payload,
       { headers }
