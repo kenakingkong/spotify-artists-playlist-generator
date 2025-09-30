@@ -8,10 +8,10 @@ export interface IUser {
 }
 
 export interface ISpotifyUser {
-  type: "user";
-  id: "test";
-  display_name: "test";
-  email: "test@email.com";
-  href: "https://api.spotify.com/v1/users/test";
+  type: string;
+  id: string;
+  display_name: string;
+  email: string;
+  href: string;
   images: Array<IImage>;
 }
