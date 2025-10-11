@@ -1,16 +1,11 @@
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
 import axios from "axios";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { ERRORS } from "@/lib/errors";
 import { parseUserProfile } from "@/lib/spotify/parse";
 import { IUser } from "@/types/user";
+import useFetch from "@/hooks/useFetch";
 
 type TAuthContext = {
   user: IUser | null;
@@ -28,54 +23,40 @@ type TAuthProviderProps = {
 export function AuthProvider({ children }: TAuthProviderProps) {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<IUser | null>(null);
+  const { data, isLoading, error, mutate } = useFetch(
+    "/api/spotify/me/profile"
+  );
 
+  const user = data?.data ? parseUserProfile(data?.data) : null;
   const isAuthenticated = Boolean(user);
 
   async function logout() {
     try {
       await axios.get("/api/auth/logout");
-      setUser(null);
+      mutate(null, { revalidate: false });
     } catch (err) {
       console.error(err);
+      // toast
     }
   }
 
   useEffect(() => {
-    let isMounted = true;
-
-    async function fetchUser() {
-      try {
-        const response = await axios.get("/api/spotify/me/profile");
-        if (!isMounted) return;
-
-        setUser(parseUserProfile(response.data.data));
-        // toast success
-      } catch (err) {
-        if (!isMounted) return;
-
-        console.error(err);
-        setUser(null);
-        // toast error
-      }
-    }
-
-    if (isLoading) return;
-    if (!!user) return;
+    if (isLoading || error) return;
 
     if (!user || router.query.new_session) {
-      fetchUser();
+      mutate();
     }
 
     if (router.query.new_session) {
       router.replace("/", undefined, { shallow: true });
     }
+  }, [router, user, isLoading]);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [router, user, isLoading, setIsLoading]);
+  useEffect(() => {
+    if (error) {
+      // toast
+    }
+  }, [error]);
 
   return (
     <AuthContext.Provider

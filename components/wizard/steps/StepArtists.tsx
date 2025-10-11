@@ -1,33 +1,16 @@
-import { useEffect } from "react";
 import WizardLayout from "../WizardLayout";
-import axios from "axios";
 import { useAuth } from "@/contexts/AuthContext";
+import useFetch from "@/hooks/useFetch";
 
 export default function StepArtists() {
-  const { user } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    let isMounted = true;
+  const endpoint = isAuthenticated
+    ? "/api/spotify/me/top-artists?limit=5"
+    : undefined;
 
-    async function fetchTopArtists() {
-      try {
-        const response = await axios.get("/api/spotify/me/top-artists?limit=5");
-        if (!isMounted) return;
-
-        console.log(response.data);
-      } catch (err) {
-        if (!isMounted) return;
-
-        console.error(err);
-      }
-    }
-
-    // if (user) fetchTopArtists();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [user]);
+  // const { data, isLoading, error } = useFetch(endpoint);
+  // console.log(data?.data?.items)
 
   return (
     <WizardLayout>
