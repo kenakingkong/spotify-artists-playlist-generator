@@ -12,10 +12,5 @@ export default function Login() {
     if (isAuthenticated) router.push("/");
   }, [isAuthenticated, router]);
 
-  return (
-    <div>
-      <p>SignIn</p>
-      <SignInButton />
-    </div>
-  );
+  return <SignInButton />;
 }

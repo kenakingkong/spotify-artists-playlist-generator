@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { STEP_COMPONENTS, STEPS, useWizardContext } from "./context";
+import { STEP_COMPONENTS } from "./config";
+import { useWizardContext } from "./context";
 
 const TRANSITION_TIMEOUT = 100;
 
@@ -15,8 +16,9 @@ const TRANSITION_CLASSES = {
 export default function WizardComponent() {
   const nodeRef = useRef<HTMLDivElement>(null);
 
-  const { step } = useWizardContext();
-  const StepComponent = STEP_COMPONENTS[step as keyof typeof STEPS];
+  const store = useWizardContext();
+  const stepKey = String(store?.currStep) as keyof typeof STEP_COMPONENTS;
+  const StepComponent = STEP_COMPONENTS[stepKey] || STEP_COMPONENTS["0"];
 
   return (
     <div className="py-4">
@@ -32,7 +34,7 @@ export default function WizardComponent() {
             exitActive: TRANSITION_CLASSES.EXIT_ACTIVE,
           }}
         >
-          <div ref={nodeRef} className="">
+          <div ref={nodeRef}>
             <StepComponent />
           </div>
         </CSSTransition>

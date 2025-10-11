@@ -181,56 +181,62 @@ describe("PlaylistWizardStore", () => {
     });
   });
 
-  describe("canProceed", () => {
-    it("should return false at step 0 when no artists are selected", () => {
-      expect(playlistWizardStore.canProceed()).toBe(false);
+  describe("canProceedToStep", () => {
+    it("should return true for step 0 (always accessible)", () => {
+      expect(playlistWizardStore.canProceedToStep(0)).toBe(true);
     });
 
-    it("should return true at step 0 when at least one artist is selected", () => {
+    it("should return false for step 1 when no artists are selected", () => {
+      expect(playlistWizardStore.canProceedToStep(1)).toBe(false);
+    });
+
+    it("should return true for step 1 when at least one artist is selected", () => {
       playlistWizardStore.selectArtistId("artist1");
 
-      expect(playlistWizardStore.canProceed()).toBe(true);
+      expect(playlistWizardStore.canProceedToStep(1)).toBe(true);
     });
 
-    it("should return false at step 1 when no tracks are selected", () => {
-      playlistWizardStore.currStep = 1;
+    it("should return false for step 2 when no tracks are selected", () => {
+      playlistWizardStore.selectArtistId("artist1");
 
-      expect(playlistWizardStore.canProceed()).toBe(false);
+      expect(playlistWizardStore.canProceedToStep(2)).toBe(false);
     });
 
-    it("should return true at step 1 when at least one track is selected", () => {
-      playlistWizardStore.currStep = 1;
+    it("should return false for step 2 when no artists are selected", () => {
       playlistWizardStore.selectTrackId("track1");
 
-      expect(playlistWizardStore.canProceed()).toBe(true);
+      expect(playlistWizardStore.canProceedToStep(2)).toBe(false);
     });
 
-    it("should return true for steps beyond step 1", () => {
-      playlistWizardStore.currStep = 2;
+    it("should return true for step 2 when both artists and tracks are selected", () => {
+      playlistWizardStore.selectArtistId("artist1");
+      playlistWizardStore.selectTrackId("track1");
 
-      expect(playlistWizardStore.canProceed()).toBe(true);
+      expect(playlistWizardStore.canProceedToStep(2)).toBe(true);
+    });
 
-      playlistWizardStore.currStep = 3;
-
-      expect(playlistWizardStore.canProceed()).toBe(true);
+    it("should return false for undefined or invalid step numbers", () => {
+      expect(playlistWizardStore.canProceedToStep(undefined)).toBe(false);
+      expect(playlistWizardStore.canProceedToStep(99)).toBe(false);
+      expect(playlistWizardStore.canProceedToStep(-1)).toBe(false);
     });
   });
 
   describe("nextStep", () => {
-    it("should increment step when canProceed returns true", () => {
+    it("should increment step by 1 when called without parameters and can proceed", () => {
       playlistWizardStore.selectArtistId("artist1");
       playlistWizardStore.nextStep();
 
       expect(playlistWizardStore.currStep).toBe(1);
     });
 
-    it("should not increment step when canProceed returns false", () => {
+    it("should not increment step when prerequisites are not met", () => {
       playlistWizardStore.nextStep();
 
       expect(playlistWizardStore.currStep).toBe(0);
     });
 
-    it("should allow multiple step increments", () => {
+    it("should allow multiple sequential step increments", () => {
       playlistWizardStore.selectArtistId("artist1");
       playlistWizardStore.nextStep();
 
@@ -240,10 +246,39 @@ describe("PlaylistWizardStore", () => {
       playlistWizardStore.nextStep();
 
       expect(playlistWizardStore.currStep).toBe(2);
+    });
 
-      playlistWizardStore.nextStep();
+    it("should jump to specific step when stepNo parameter is provided", () => {
+      playlistWizardStore.selectArtistId("artist1");
+      playlistWizardStore.selectTrackId("track1");
+      playlistWizardStore.nextStep(2);
 
-      expect(playlistWizardStore.currStep).toBe(3);
+      expect(playlistWizardStore.currStep).toBe(2);
+    });
+
+    it("should not jump to step if prerequisites are not met", () => {
+      playlistWizardStore.nextStep(2);
+
+      expect(playlistWizardStore.currStep).toBe(0);
+    });
+
+    it("should allow jumping back to previous steps", () => {
+      playlistWizardStore.selectArtistId("artist1");
+      playlistWizardStore.selectTrackId("track1");
+      playlistWizardStore.currStep = 2;
+
+      playlistWizardStore.nextStep(1);
+
+      expect(playlistWizardStore.currStep).toBe(1);
+    });
+
+    it("should allow jumping to step 0", () => {
+      playlistWizardStore.selectArtistId("artist1");
+      playlistWizardStore.currStep = 1;
+
+      playlistWizardStore.nextStep(0);
+
+      expect(playlistWizardStore.currStep).toBe(0);
     });
   });
 

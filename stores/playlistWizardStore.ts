@@ -11,18 +11,24 @@ export class PlaylistWizardStore {
     makeAutoObservable(this);
   }
 
-  nextStep() {
-    if (this.canProceed()) this.currStep++;
+  nextStep(stepNo?: number) {
+    let nextStepNo =  stepNo ?? this.currStep + 1;
+    
+    if (this.canProceedToStep(nextStepNo)) {
+      this.currStep = nextStepNo;
+    }
   }
 
-  canProceed() {
-    switch (this.currStep) {
+  canProceedToStep(stepNo?: number) {
+    switch (stepNo) {
       case 0:
-        return this.artistIds.size > 0;
-      case 1:
-        return this.trackIds.size > 0;
-      default:
         return true;
+      case 1:
+        return this.artistIds.size > 0;
+      case 2:
+        return this.artistIds.size > 0 && this.trackIds.size > 0;
+      default:
+        return false;
     }
   }
 

@@ -1,13 +1,13 @@
 import { useWizardContext } from "./context";
 
 export default function WizardFooter() {
-  const { hasNextStep, nextStep } = useWizardContext();
+  const store = useWizardContext();
 
-  if (!hasNextStep()) return null;
+  if (!store?.canProceedToStep()) return null;
 
   return (
     <nav className="py-4">
-      <button onClick={nextStep}>Next</button>
+      <button onClick={() => store.nextStep()}>Next</button>
     </nav>
   );
 }

@@ -1,32 +1,31 @@
 import { MouseEvent } from "react";
 import classNames from "classnames";
-import { IStep, STEPS, useWizardContext } from "./context";
+import { IStep, STEPS } from "./config";
+import { useWizardContext } from "./context";
 
 export default function WizardHeader() {
-  const { step, forceStep } = useWizardContext();
-
-  const NAVIGABLE_STEPS = [STEPS.ARTISTS, STEPS.SONGS, STEPS.PLAYLIST];
+  const store = useWizardContext();
 
   function handleClick(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
-    const id = (event.target as HTMLButtonElement).getAttribute("data-id");
-    if (!id) return;
+    const idx = (event.target as HTMLButtonElement).getAttribute("data-index");
+    if (!idx) return;
 
-    forceStep(id);
+    store?.nextStep(Number(idx));
   }
 
   return (
     <nav className="py-4">
       <ul className="flex justify-between gap-2">
-        {NAVIGABLE_STEPS.map((s: IStep) => (
+        {Object.values(STEPS).map((s: IStep) => (
           <button
             key={`nav-${s.id}`}
-            data-id={s.id}
+            data-index={s.index}
             onClick={handleClick}
             className={classNames(
               "text-sm flex items-center gap-1",
-              step == s.id && "underline underline-offset-4"
+              store?.currStep == s.index && "underline underline-offset-4"
             )}
           >
             {s.index}. {s.shortLabel}

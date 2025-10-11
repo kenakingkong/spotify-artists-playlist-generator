@@ -5,13 +5,6 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function Home() {
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated)
-    return (
-      <div>
-        <p>SignIn</p>
-        <SignInButton />
-      </div>
-    );
-
+  if (!isAuthenticated) return <SignInButton />;
   return <Wizard />;
 }

@@ -15,7 +15,7 @@ import { IUser } from "@/types/user";
 type TAuthContext = {
   user: IUser | null;
   isAuthenticated: boolean;
-  logout: () => void;
+  logout: () => Promise<void>;
   isLoading: boolean;
 };
 
@@ -33,7 +33,14 @@ export function AuthProvider({ children }: TAuthProviderProps) {
 
   const isAuthenticated = Boolean(user);
 
-  const logout = () => setUser(null);
+  async function logout() {
+    try {
+      await axios.get("/api/auth/logout");
+      setUser(null);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -43,7 +50,6 @@ export function AuthProvider({ children }: TAuthProviderProps) {
         const response = await axios.get("/api/spotify/me/profile");
         if (!isMounted) return;
 
-        console.log(parseUserProfile(response.data.data));
         setUser(parseUserProfile(response.data.data));
         // toast success
       } catch (err) {
@@ -87,18 +93,9 @@ export function AuthProvider({ children }: TAuthProviderProps) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  const router = useRouter();
 
   if (!context) {
     throw new Error(ERRORS.USE_AUTH);
   }
-
-  // useEffect(() => {
-  //   if (context.isAuthenticated) return;
-  //   if (context.isLoading) return;
-
-  //   // router.push("/");
-  // }, [context.isAuthenticated, context.isLoading, router]);
-
   return context;
 }
