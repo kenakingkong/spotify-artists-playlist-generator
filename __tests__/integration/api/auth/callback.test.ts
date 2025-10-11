@@ -96,7 +96,7 @@ describe("/api/auth/callback", () => {
         ])
       );
 
-      expect(redirectMock).toHaveBeenCalledWith("/");
+      expect(redirectMock).toHaveBeenCalledWith("/?new_session=true");
     });
   });
 

@@ -1,10 +1,10 @@
+import { libraryStore } from "@/stores/libraryStore";
 import { WizardContextProvider } from "./context";
-import WizardComponent from "./WizardComponent";
 
 export default function Wizard() {
   return (
-    <WizardContextProvider>
-      <WizardComponent />
+    <WizardContextProvider library={libraryStore}>
+      <Wizard />
     </WizardContextProvider>
   );
 }
