@@ -20,4 +20,5 @@ export const ERRORS = {
   INVALID_TRACKS: "Invalid Track IDs",
 
   USE_AUTH: "useAuth must be used within an AuthProvider",
+  USE_TOAST: "useToast must be used within a ToastProvider"
 };

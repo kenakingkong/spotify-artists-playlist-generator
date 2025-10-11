@@ -28,6 +28,55 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ========================
+   Button
+   ======================== */
+
 .button {
   @apply border py-0.5 px-2.5 rounded-md text-xs flex items-center gap-1;
+}
+
+/* ========================
+   Toast
+   ======================== */
+
+/* Toast transitions */
+.toast-transition-enter {
+  @apply opacity-0 translate-y-2;
+}
+.toast-transition-enter-active {
+  @apply opacity-100 translate-y-0 transition-all duration-300 ease-out;
+}
+.toast-transition-exit {
+  @apply opacity-100 translate-y-0;
+}
+.toast-transition-exit-active {
+  @apply opacity-0 -translate-y-2 transition-all duration-300 ease-out;
+}
+
+/* Toast base styles */
+.toast {
+  @apply py-2.5 px-3 rounded-xs shadow-lg w-3xs max-w-screen text-base;
+}
+.toast[data-type="success"] {
+  @apply bg-emerald-500 text-white;
+}
+.toast[data-type="error"] {
+  @apply bg-red-500 text-white;
+}
+.toast[data-type="warning"] {
+  @apply bg-amber-500 text-white;
+}
+.toast[data-type="info"] {
+  @apply bg-slate-500 text-white;
+}
+
+/* Toast progress bar animation */
+@keyframes toast-progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }
