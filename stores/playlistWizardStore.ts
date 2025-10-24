@@ -5,7 +5,7 @@ export class PlaylistWizardStore {
   artistIds = new Set<string>();
   trackIds = new Set<string>();
 
-  currStep = 0;
+  currStep = 2;
 
   constructor(private libraryStore: LibraryStore) {
     makeAutoObservable(this);
@@ -24,9 +24,9 @@ export class PlaylistWizardStore {
       case 0:
         return true;
       case 1:
-        return this.artistIds.size > 0;
+        return true // return this.artistIds.size > 0;
       case 2:
-        return this.artistIds.size > 0 && this.trackIds.size > 0;
+        return true // return this.artistIds.size > 0 && this.trackIds.size > 0;
       default:
         return false;
     }
