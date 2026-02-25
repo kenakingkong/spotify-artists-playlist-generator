@@ -1,9 +1,8 @@
-import Link from "next/link";
-
+/* eslint-disable @next/next/no-html-link-for-pages */
 export default function SignOutButton() {
   return (
-    <Link href="/api/auth/logout" className="block whitespace-nowrap w-max text-[10px] hover:underline">
+    <a href="/api/auth/logout" className="block whitespace-nowrap w-max text-[10px] hover:underline">
       Logout
-    </Link>
+    </a>
   );
 }

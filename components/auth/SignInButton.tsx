@@ -1,9 +1,8 @@
-import Link from "next/link";
-
+/* eslint-disable @next/next/no-html-link-for-pages */
 export default function SignInButton() {
   return (
-    <Link href="/api/auth/login" className="block whitespace-nowrap w-max button">
+    <a href="/api/auth/login" className="block whitespace-nowrap w-max button">
       Sign in with Spotify
-    </Link>
+    </a>
   );
 }
