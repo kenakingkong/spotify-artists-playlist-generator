@@ -6,7 +6,7 @@ import generatePlaylistName from "@/utils/generatePlaylistName";
 import { ICreatorContextProps } from "./types";
 import generatePlaylistDescription from "@/utils/generatePlaylistDescription";
 
-export const MAX_ARTISTS = 3;
+export const MAX_ARTISTS = 10;
 
 const CreatorContext = createContext<ICreatorContextProps>({
   playlistUri: null,
