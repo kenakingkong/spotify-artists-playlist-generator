@@ -18,20 +18,15 @@ Next.js is a React framework that makes building fast, SEO-friendly, and scalabl
 
 [🔗 Next documentation](https://nextjs.org/docs)
 
-### MobX
-MobX is a state management system automatically updates only the parts of your app that depend on the state when it changes.
-
-[🔗 MobX documentation](https://mobx.js.org/README.html)
-
-### TanStack Query
-TanStack Query is a library for managing server state that simplifies data fetching, caching, and synchronization.
-
-[🔗 TanStack Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview)
-
 ### Vercel
 Vercel hosts the Next.js frontend and serverless APIs, providing fast, scalable deployment for both UI and backend logic
 
 [🔗 Vercel documentation](https://vercel.com/docs/frameworks/full-stack/nextjs)
+
+### Vercel Analytics
+Vercel Analytics tracks page views and user interactions with zero configuration
+
+[🔗 Vercel Analytics documentation](https://vercel.com/docs/analytics)
 
 
 ### Breakdown
@@ -41,64 +36,53 @@ Vercel hosts the Next.js frontend and serverless APIs, providing fast, scalable 
                               │
                               ▼
                 ┌──────────────────────────┐
-                │        API / Server      |
-                |──────────────────────────|
-                |  • Auth (via Spotify)    |
-                |  • Spotify API           │
-                └──────────────────────────┘
-                              │
-                              ▼
+                │        API / Server      |────────────────────┐
+                |──────────────────────────|                    │
+                |  • Auth (via Spotify)    |                    ▼
+                |  • Spotify API           │   ┌─────────────────────────┐
+                └──────────────────────────┘   │       Supabase DB       │
+                              │                │─────────────────────────│
+                              │                │  events table           │
+                              │                │    • event              │
+                              │                │    • user_id            │
+                              │                │    • payload            │
+                              │                │    • environment        │
+                              │                │                         │
+                              │                │  rate limit: 5/day      │
+                              │                │  (per user, resets UTC) │
+                              ▼                └─────────────────────────┘
                   ┌────────────────────────┐
-                  │   React Query Cache    │
+                  │   SWR / Axios Cache    │
                   │ (API calls, queries)   │
                   └────────────────────────┘
                               │
                               ▼
        ┌─────────────────────────────────────────────┐
-       │                  MobX Stores                │
+       │           Top-level React Contexts          │
        │─────────────────────────────────────────────│
-       │  LibraryStore                               │
-       │    • songs                                  │
-       │    • artists                                │
+       │  AuthContext                                │
+       │    • user (id, displayName, email, image)   │
+       │    • isAuthenticated                        │
+       │    • isLoading                              │
+       │    • logout()                               │
        │                                             │
-       │  PlaylistWizardStore                        │
-       │    • songs                                  │
-       │    • artist                                 │
-       │    • name                                   │
-       |    • url                                    |
-       │    • currentStep                            │
-       |                                             |
-       |─────────────────────────────────────────────|
-       |            React Context / State            │
-       |─────────────────────────────────────────────|
-       │  UserProfileContext                         │
-       │    • id                                     │ 
-       │    • displayName                            │
-       │    • email                                  │
-       │    • image                                  |
+       │  ToastContext                               │
+       │    • toast() / success() / error()          │
+       │    • warning() / info()                     │
        └─────────────────────────────────────────────┘
                               │
                               ▼
        ┌─────────────────────────────────────────────┐
-       │                  Components                 │
-       |─────────────────────────────────────────────|
-       │  • Wizard                                   |
-       |    0. SignIn                                |
-       |    1. Artists                               |
-       |    2. Songs                                 |
-       |    3. Playlist                              │
-       │  • Search Component (Song, Artist).         │
-       │  • Select Component (Song, Artist)          │
-       └─────────────────────────────────────────────┘
-                              │
-                              ▼
-       ┌─────────────────────────────────────────────┐
-       │               Vercel Hosting                │
-       |─────────────────────────────────────────────|
-       │  • Frontend deployed as static/SSR pages    │
-       │  • Serverless API endpoints.                │
-       │    • e.g., send email when playlist created │
-       │    • logging                                │
+       │               Main Components               │
+       │─────────────────────────────────────────────│
+       │  Creator                                    │
+       │    • CreatorContext                         │
+       │        – artists[], playlistUri             │
+       │        – selectArtist() / deselectArtist()  │
+       │        – generatePlaylist()                 │
+       │                                             │
+       │  Gallery                                    │
+       │    • displays embedded Spotify playlists    │
        └─────────────────────────────────────────────┘
 
 
@@ -112,4 +96,9 @@ pnpm dev
 ### Run tests
 ```bash
 pnpm test
+```
+
+### Build
+```bash
+pnpm build
 ```
