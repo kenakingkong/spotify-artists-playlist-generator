@@ -21,7 +21,7 @@ export function withSpotifyAuth(handler: THandler): THandler {
       }
 
       return handler(req, res, accessToken);
-    } catch (err) {
+    } catch {
       return res.status(401).json({ error: ERRORS.UNAUTHORIZED });
     }
   };
@@ -56,7 +56,7 @@ export function getSpotifyCookieOptions(
     httpOnly: httpOnly,
     path: "/",
     maxAge: expires_in,
-    sameSite: "lax" as any,
+    sameSite: "lax" as const,
     secure: process.env.NODE_ENV === "production",
   };
 }

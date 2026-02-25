@@ -1,7 +1,9 @@
+import Link from "next/link";
+
 export default function SignOutButton() {
   return (
-    <a href="/api/auth/logout" className="block whitespace-nowrap w-max text-[10px] hover:underline">
+    <Link href="/api/auth/logout" className="block whitespace-nowrap w-max text-[10px] hover:underline">
       Logout
-    </a>
+    </Link>
   );
 }

@@ -6,7 +6,7 @@ import { withSpotifyAuth } from "@/lib/spotify/auth";
 import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
 
 async function GET(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse,
   accessToken: string
 ) {
@@ -16,7 +16,7 @@ async function GET(
     });
 
     return res.status(200).json({ data: response.data });
-  } catch (err: any) {
+  } catch {
     return res.status(500).json({ error: ERRORS.SPOTIFY_DATA });
   }
 }

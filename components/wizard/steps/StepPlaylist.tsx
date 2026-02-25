@@ -21,7 +21,7 @@ export default function StepPlaylist() {
         uri: playlistUri,
       };
 
-      const callback = (EmbedController: SpotifyEmbedController) => {
+      const callback = (_: SpotifyEmbedController) => {
         console.log('callback')
       };
 

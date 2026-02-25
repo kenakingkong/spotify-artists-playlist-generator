@@ -88,8 +88,8 @@ export function CreatorContextProvider({
       setPlaylistUri(uri);
       setArtists([]);
       onSuccess?.();
-    } catch (err: any) {
-      onError?.(err);
+    } catch (err) {
+      onError?.(err as Error);
     }
   }
 

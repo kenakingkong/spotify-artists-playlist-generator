@@ -20,7 +20,7 @@ async function GET(
     });
 
     return res.status(200).json({ data: response.data });
-  } catch (err: any) {
+  } catch {
     return res.status(500).json({ error: ERRORS.GENERIC });
   }
 }

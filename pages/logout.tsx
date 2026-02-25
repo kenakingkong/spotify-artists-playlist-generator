@@ -24,7 +24,7 @@ export default function Logout() {
     return () => {
       isMounted = false;
     };
-  }, [router]);
+  }, [router, logout]);
 
   return <SignOutButton />;
 }

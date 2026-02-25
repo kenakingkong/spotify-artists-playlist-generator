@@ -46,7 +46,7 @@ export default function PlaylistEmbed({
 
       api.createController(element, options, callback);
     });
-  }, [uri]);
+  }, [uri]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>

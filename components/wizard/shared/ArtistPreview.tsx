@@ -9,10 +9,6 @@ function ArtistPreview({ artist }: { artist: IArtist }) {
   const { name, uri, images } = artist;
   const coverImage = images[0];
 
-  function onClick() {
-    
-  }
-
   return (
     <button
       type="button"

@@ -78,7 +78,7 @@ export default async function handler(
     ]);
 
     res.redirect("/?new_session=true");
-  } catch (err: any) {
+  } catch {
     res.status(500).json({ error: ERRORS.AUTHENTICATION_FAILED });
   }
 }

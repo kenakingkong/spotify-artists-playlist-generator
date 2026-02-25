@@ -60,7 +60,7 @@ export default async function handler(
     ]);
 
     res.status(200).json({ access_token });
-  } catch (err: any) {
+  } catch {
     res.status(500).json({ error: ERRORS.FAILED_REFRESH });
   }
 }
