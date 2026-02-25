@@ -8,10 +8,10 @@ import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
 async function POST(
   req: NextApiRequest,
   res: NextApiResponse,
-  accessToken: string
+  accessToken: string,
 ) {
   try {
-    const { userId, name } = req.body;
+    const { userId, name, description } = req.body;
 
     if (!userId) {
       return res.status(400).json({ error: ERRORS.MISSING_USER_ID });
@@ -22,7 +22,7 @@ async function POST(
     }
 
     const endpoint = SPOTIFY_API_ENDPOINTS.userPlaylists(userId);
-    const payload = { name, public: true };
+    const payload = { name, description, public: true };
 
     const response = await axios.post(endpoint, payload, {
       headers: { Authorization: `Bearer ${accessToken}` },

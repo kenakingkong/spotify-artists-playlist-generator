@@ -4,6 +4,7 @@ import { IArtist } from "@/types/artist";
 import { ITrack } from "@/types/track";
 import generatePlaylistName from "@/utils/generatePlaylistName";
 import { ICreatorContextProps } from "./types";
+import generatePlaylistDescription from "@/utils/generatePlaylistDescription";
 
 const MAX_ARTISTS = 20;
 
@@ -76,6 +77,7 @@ export function CreatorContextProvider({
         {
           userId,
           name: generatePlaylistName(artists.map((a) => a.name)),
+          description: generatePlaylistDescription(),
         },
       );
       const { id: playlistId, uri } = createPlaylistResponse.data.data;

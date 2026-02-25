@@ -53,6 +53,28 @@ describe("/api/spotify/playlists", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
     const { req, res } = createMockApi();
+    req.body = { userId: "123", name: "My Playlist", description: "A description" };
+
+    await handler(
+      req as NextApiRequest,
+      res as NextApiResponse,
+      MOCK_ACCESS_TOKEN
+    );
+
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.json).toHaveBeenCalledWith({ data: mockResponse });
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      expect.any(String),
+      { name: "My Playlist", description: "A description", public: true },
+      expect.any(Object)
+    );
+  });
+
+  it("creates playlist successfully without description", async () => {
+    const mockResponse = { id: "playlist123", name: "My Playlist" };
+    mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
+
+    const { req, res } = createMockApi();
     req.body = { userId: "123", name: "My Playlist" };
 
     await handler(
@@ -63,6 +85,11 @@ describe("/api/spotify/playlists", () => {
 
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith({ data: mockResponse });
+    expect(mockedAxios.post).toHaveBeenCalledWith(
+      expect.any(String),
+      { name: "My Playlist", description: undefined, public: true },
+      expect.any(Object)
+    );
   });
 
   it("handles axios errors gracefully", async () => {
