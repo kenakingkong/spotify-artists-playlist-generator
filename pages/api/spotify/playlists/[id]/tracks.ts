@@ -9,7 +9,7 @@ import { urisToQueryString } from "@/lib/spotify/validate";
 async function POST(
   req: NextApiRequest,
   res: NextApiResponse,
-  accessToken: string
+  accessToken: string,
 ) {
   try {
     const id = req.query.id as string;
@@ -22,7 +22,7 @@ async function POST(
     }
 
     const endpoint = SPOTIFY_API_ENDPOINTS.playlistTracks(id);
-    const payload = { uris: validUris };
+    const payload = { uris: validUris.split(",") };
 
     const response = await axios.post(endpoint, payload, {
       headers: { Authorization: `Bearer ${accessToken}` },

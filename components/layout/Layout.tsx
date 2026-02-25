@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const classes = classNames(
-    "p-4 max-w-xl mx-auto",
+    "p-2 max-w-xl mx-auto",
     geistSans.className,
-    geistMono.className
+    geistMono.className,
   );
 
   return (
@@ -26,9 +26,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Header />
       </header>
       <main className={classes}>{children}</main>
-      <footer className={classes}>
+      {/* <footer className={classes}>
         <Footer />
-      </footer>
+      </footer> */}
     </>
   );
 }

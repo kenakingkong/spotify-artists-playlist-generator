@@ -33,7 +33,7 @@ body {
    ======================== */
 
 .button {
-  @apply border py-0.5 px-2.5 rounded-md text-xs flex items-center gap-1;
+  @apply border py-0.5 px-2.5 rounded-md text-xs flex items-center gap-1 cursor-pointer;
 }
 
 /* ========================

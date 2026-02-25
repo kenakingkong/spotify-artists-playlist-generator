@@ -16,7 +16,7 @@ export default function WizardHeader() {
   }
 
   return (
-    <nav className="py-4">
+    <nav className="pb-4">
       <ul className="flex justify-between gap-2">
         {Object.values(STEPS).map((s: IStep) => (
           <button

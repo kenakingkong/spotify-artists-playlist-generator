@@ -1,4 +1,4 @@
-import { StepArtists, StepPlaylist, StepSongs } from "./steps";
+import { StepArtists, StepPlaylist, StepTracks } from "./steps";
 
 export interface IStep {
   index: number;
@@ -34,6 +34,6 @@ export const STEPS: ISteps = {
 
 export const STEP_COMPONENTS = {
   "0": StepArtists,
-  "1": StepSongs,
+  "1": StepTracks,
   "2": StepPlaylist,
 };

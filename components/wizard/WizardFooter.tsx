@@ -7,7 +7,9 @@ export default function WizardFooter() {
 
   return (
     <nav className="py-4">
-      <button onClick={() => store.nextStep()}>Next</button>
+      <button className="button" onClick={() => store.nextStep()}>
+        Next
+      </button>
     </nav>
   );
 }

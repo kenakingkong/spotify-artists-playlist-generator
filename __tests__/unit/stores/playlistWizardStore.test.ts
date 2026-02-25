@@ -306,13 +306,13 @@ describe("PlaylistWizardStore", () => {
     });
   });
 
-  describe("getFirstAristNamesAsStr", () => {
+  describe("getFirstArtistNamesAsStr", () => {
     beforeEach(() => {
       mockTracks.forEach((track) => libraryStore.addTrack(track));
     });
 
     it("should return empty string when no tracks are selected", () => {
-      const result = playlistWizardStore.getFirstAristNamesAsStr();
+      const result = playlistWizardStore.getFirstArtistNamesAsStr();
 
       expect(result).toBe("");
     });
@@ -321,7 +321,7 @@ describe("PlaylistWizardStore", () => {
       playlistWizardStore.selectTrackId("track1");
       playlistWizardStore.selectTrackId("track2");
 
-      const result = playlistWizardStore.getFirstAristNamesAsStr();
+      const result = playlistWizardStore.getFirstArtistNamesAsStr();
 
       expect(result).toContain("The Beatles");
       expect(result).toContain("Beatles Tribute Band");
@@ -332,7 +332,7 @@ describe("PlaylistWizardStore", () => {
       playlistWizardStore.selectTrackId("track2");
       playlistWizardStore.selectTrackId("track3");
 
-      const result = playlistWizardStore.getFirstAristNamesAsStr();
+      const result = playlistWizardStore.getFirstArtistNamesAsStr();
       const artistNames = result.split(", ");
 
       expect(artistNames.length).toBeLessThanOrEqual(4);
@@ -342,7 +342,7 @@ describe("PlaylistWizardStore", () => {
       playlistWizardStore.selectTrackId("track1");
       playlistWizardStore.selectTrackId("track2");
 
-      const result = playlistWizardStore.getFirstAristNamesAsStr(2);
+      const result = playlistWizardStore.getFirstArtistNamesAsStr(2);
       const artistNames = result.split(", ");
 
       expect(artistNames.length).toBeLessThanOrEqual(2);
@@ -350,7 +350,7 @@ describe("PlaylistWizardStore", () => {
 
     it("should handle tracks not found in library store", () => {
       playlistWizardStore.selectTrackId("nonexistent-track");
-      const result = playlistWizardStore.getFirstAristNamesAsStr();
+      const result = playlistWizardStore.getFirstArtistNamesAsStr();
 
       expect(result).toBe("");
     });
@@ -370,7 +370,7 @@ describe("PlaylistWizardStore", () => {
       playlistWizardStore.selectTrackId("track1");
       playlistWizardStore.selectTrackId("track4");
 
-      const result = playlistWizardStore.getFirstAristNamesAsStr();
+      const result = playlistWizardStore.getFirstArtistNamesAsStr();
       const artistNames = result.split(", ");
       const uniqueNames = new Set(artistNames);
 

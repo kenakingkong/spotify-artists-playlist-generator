@@ -1,18 +1,23 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import useFetch from "@/hooks/useFetch";
 import SearchBar from "@/components/ui/SearchBar";
-import ArtistsList from "../shared/ArtistsList";
-import WizardLayout from "../WizardLayout";
+
+import { useCreatorContext } from "../context";
+import ArtistsList from "./ArtistsList";
+import GeneratePlaylistButton from "./GeneratePlaylistBar";
+import SelectedArtists from "./SelectedArtists";
 
 const DEBOUNCE_DELAY = 300;
 
 export default function StepArtists() {
+  const { playlistUri } = useCreatorContext();
+
   const [query, setQuery] = useState<string | undefined>();
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const topArtistsData = useFetch("/api/spotify/me/top-artists?limit=10");
   const queryArtistsData = useFetch(
-    query ? `/api/spotify/search/artists?limit=10&q=${query}` : undefined
+    query ? `/api/spotify/search/artists?limit=10&q=${query}` : undefined,
   );
 
   const searchedArtists = queryArtistsData.data?.data?.artists?.items;
@@ -32,35 +37,35 @@ export default function StepArtists() {
     };
   }, []);
 
+  if (playlistUri) return null;
+
   return (
-    <WizardLayout>
-      <div className="space-y-4">
-        <div className="space-y-1">
-          <p className="text-xl font-bold">select artists</p>
-          <SearchBar
-            id="search-artists"
-            placeholder="search any artist..."
-            onChange={onChange}
-          />
-          <ArtistsList
-            id="searched-artists"
-            artists={searchedArtists}
-            isLoading={queryArtistsData.isLoading}
-            error={queryArtistsData.error}
-          />
-        </div>
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <SearchBar
+          id="search-artists"
+          placeholder="search any artist..."
+          onChange={onChange}
+        />
+        <ArtistsList
+          id="searched-artists"
+          artists={searchedArtists}
+          isLoading={queryArtistsData.isLoading}
+          error={queryArtistsData.error}
+        />
         {!query && topArtists && (
-          <div className="space-y-1">
-            <p className="text-sm font-bold">your top artists</p>
-            <ArtistsList
-              id="top-artists"
-              artists={topArtistsData.data?.data?.items || []}
-              isLoading={topArtistsData.isLoading}
-              error={topArtistsData.error}
-            />
-          </div>
+          <ArtistsList
+            id="top-artists"
+            artists={topArtistsData.data?.data?.items || []}
+            isLoading={topArtistsData.isLoading}
+            error={topArtistsData.error}
+          />
         )}
       </div>
-    </WizardLayout>
+      <div className="border-t pt-4 space-y-2">
+        <SelectedArtists />
+        <GeneratePlaylistButton />
+      </div>
+    </div>
   );
 }

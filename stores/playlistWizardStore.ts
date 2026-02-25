@@ -5,7 +5,7 @@ export class PlaylistWizardStore {
   artistIds = new Set<string>();
   trackIds = new Set<string>();
 
-  currStep = 2;
+  currStep = 0;
 
   constructor(private libraryStore: LibraryStore) {
     makeAutoObservable(this);
@@ -24,9 +24,9 @@ export class PlaylistWizardStore {
       case 0:
         return true;
       case 1:
-        return true // return this.artistIds.size > 0;
+        return this.artistIds.size > 0;
       case 2:
-        return true // return this.artistIds.size > 0 && this.trackIds.size > 0;
+        return this.artistIds.size > 0 && this.trackIds.size > 0;
       default:
         return false;
     }
@@ -70,7 +70,7 @@ export class PlaylistWizardStore {
     this.currStep = 0;
   }
 
-  getFirstAristNamesAsStr(limit = 4) {
+  getFirstArtistNamesAsStr(limit = 4) {
     const trackIdsList = Array.from(this.trackIds);
     const names = this.libraryStore.getArtistNamesFromTrackIds(trackIdsList);
     return names.join(", ");

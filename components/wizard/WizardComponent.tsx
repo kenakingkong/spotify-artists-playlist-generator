@@ -21,24 +21,21 @@ export default function WizardComponent() {
   const StepComponent = STEP_COMPONENTS[stepKey] || STEP_COMPONENTS["0"];
 
   return (
-    <div className="py-4">
-      <TransitionGroup component={null}>
-        <CSSTransition
-          // key={step}
-          nodeRef={nodeRef}
-          timeout={TRANSITION_TIMEOUT}
-          classNames={{
-            enter: TRANSITION_CLASSES.ENTER,
-            enterActive: TRANSITION_CLASSES.ENTER_ACTIVE,
-            exit: TRANSITION_CLASSES.EXIT,
-            exitActive: TRANSITION_CLASSES.EXIT_ACTIVE,
-          }}
-        >
-          <div ref={nodeRef}>
-            <StepComponent />
-          </div>
-        </CSSTransition>
-      </TransitionGroup>
-    </div>
+    <TransitionGroup component={null}>
+      <CSSTransition
+        nodeRef={nodeRef}
+        timeout={TRANSITION_TIMEOUT}
+        classNames={{
+          enter: TRANSITION_CLASSES.ENTER,
+          enterActive: TRANSITION_CLASSES.ENTER_ACTIVE,
+          exit: TRANSITION_CLASSES.EXIT,
+          exitActive: TRANSITION_CLASSES.EXIT_ACTIVE,
+        }}
+      >
+        <div ref={nodeRef}>
+          <StepComponent />
+        </div>
+      </CSSTransition>
+    </TransitionGroup>
   );
 }
