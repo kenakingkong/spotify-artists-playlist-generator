@@ -5,7 +5,9 @@ const DEFAULT_PLAYLIST_URIS = [
   "spotify:playlist:6hGg3TyQPnrh46s4TtLy8f",
   "spotify:playlist:20dD6PlCOxkNDTlnqfVEm6",
   "spotify:playlist:6n0Cel9V4PDzT0ovlTVeN6",
-  "spotify:playlist:1qdYnIAuPCW4bJ18I9JZj1" ,
+  "spotify:playlist:1qdYnIAuPCW4bJ18I9JZj1",
+  "spotify:playlist:3V6v7gjl9a9z0dusp1ffcu",
+  // "spotify:playlist:",
 ];
 
 export default function Gallery() {
