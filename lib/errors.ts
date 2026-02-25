@@ -18,6 +18,7 @@ export const ERRORS = {
   MISSING_USER_ID: "Missing User ID",
   REQUIRE_PLAYLIST_NAME: "Playlist name is required",
   INVALID_TRACKS: "Invalid Track IDs",
+  RATE_LIMIT_EXCEEDED: "You've reached your daily playlist limit. Try again tomorrow.",
 
   USE_AUTH: "useAuth must be used within an AuthProvider",
   USE_TOAST: "useToast must be used within a ToastProvider"

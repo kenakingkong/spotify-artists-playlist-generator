@@ -6,7 +6,7 @@ import generatePlaylistName from "@/utils/generatePlaylistName";
 import { ICreatorContextProps } from "./types";
 import generatePlaylistDescription from "@/utils/generatePlaylistDescription";
 
-const MAX_ARTISTS = 20;
+export const MAX_ARTISTS = 3;
 
 const CreatorContext = createContext<ICreatorContextProps>({
   playlistUri: null,
@@ -34,11 +34,6 @@ export function CreatorContextProvider({
   }
 
   function selectArtist(artist: IArtist) {
-    if (artists.length > MAX_ARTISTS) {
-      console.warn("You can only select up to 20 artists");
-      return;
-    }
-
     setArtists((prev) => [...prev, artist]);
   }
 
@@ -78,6 +73,7 @@ export function CreatorContextProvider({
           userId,
           name: generatePlaylistName(artists.map((a) => a.name)),
           description: generatePlaylistDescription(),
+          artists: artists.map((a) => a.name),
         },
       );
       const { id: playlistId, uri } = createPlaylistResponse.data.data;

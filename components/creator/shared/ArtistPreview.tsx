@@ -4,13 +4,14 @@ import classNames from "classnames";
 import Image from "next/image";
 
 import { IArtist } from "@/types/artist";
-import { useCreatorContext } from "../context";
+import { MAX_ARTISTS, useCreatorContext } from "../context";
 
 function ArtistPreview({ artist }: { artist: IArtist }) {
   const { artists, toggleArtist } = useCreatorContext();
 
   const { id, name, uri, images } = artist;
   const coverImage = images[0];
+  const isAtLimit = artists.length == MAX_ARTISTS;
   const isSelected = artists.find((artist) => artist.id == id);
 
   function onClick() {
@@ -27,6 +28,7 @@ function ArtistPreview({ artist }: { artist: IArtist }) {
         isSelected && "bg-gray-200/50",
       )}
       onClick={onClick}
+      disabled={isAtLimit && !isSelected}
     >
       {coverImage?.url ? (
         <Image
