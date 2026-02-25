@@ -1,14 +1,11 @@
 import { useEffect, useRef } from "react";
 import Script from "next/script";
-import {
-  SpotifyEmbedController,
-  SpotifyEmbedOptions,
-  SpotifyIFrameAPI,
-} from "@/types/spotify";
+import { SpotifyEmbedOptions, SpotifyIFrameAPI } from "@/types/spotify";
 import WizardLayout from "../WizardLayout";
 
 export default function StepPlaylist() {
-  const playlistUri = "spotify:playlist:0Qy7SBCnfBunmDuOuyCnfG?si=acfaf3f1e67448a1";
+  const playlistUri =
+    "spotify:playlist:0Qy7SBCnfBunmDuOuyCnfG?si=acfaf3f1e67448a1";
   const embedRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -17,12 +14,12 @@ export default function StepPlaylist() {
       if (!element) return;
 
       const options: SpotifyEmbedOptions = {
-        theme: 'light',
+        theme: "light",
         uri: playlistUri,
       };
 
-      const callback = (_: SpotifyEmbedController) => {
-        console.log('callback')
+      const callback = () => {
+        console.log("callback");
       };
 
       IFrameAPI.createController(element, options, callback);
@@ -31,7 +28,10 @@ export default function StepPlaylist() {
 
   return (
     <WizardLayout>
-      <Script src="https://open.spotify.com/embed/iframe-api/v1" strategy="afterInteractive" />
+      <Script
+        src="https://open.spotify.com/embed/iframe-api/v1"
+        strategy="afterInteractive"
+      />
       <div ref={embedRef} />
     </WizardLayout>
   );
