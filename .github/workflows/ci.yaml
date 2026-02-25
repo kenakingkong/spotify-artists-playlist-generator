@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
     steps:
       - uses: actions/checkout@v4
 
@@ -29,8 +32,3 @@ jobs:
 
       - name: Build
         run: pnpm run build
-
-      - name: Notify Vercel
-        uses: vercel/repository-dispatch/actions/status@v1
-        with:
-          name: "Vercel - spotify-artists-playlist-generator: lint"
