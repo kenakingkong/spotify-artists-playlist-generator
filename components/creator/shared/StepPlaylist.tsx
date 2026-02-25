@@ -1,46 +1,41 @@
-import { useEffect, useRef } from "react";
-import Script from "next/script";
-import {
-  SpotifyEmbedController,
-  SpotifyEmbedOptions,
-  SpotifyIFrameAPI,
-} from "@/types/spotify";
+import PlaylistEmbed from "@/components/ui/PlaylistEmbed";
 import { useCreatorContext } from "../context";
+import useCopy from "@/hooks/useCopy";
 
 export default function StepPlaylist() {
-  const { playlistUri } = useCreatorContext();
+  const { playlistUri, reset } = useCreatorContext();
 
-  const embedRef = useRef<HTMLDivElement | null>(null);
+  const spotifyUrl = playlistUri
+    ? `https://open.spotify.com/playlist/${playlistUri.split(":").slice(-1)[0]}`
+    : "";
 
-  useEffect(() => {
-    window.onSpotifyIframeApiReady = (IFrameAPI: SpotifyIFrameAPI) => {
-      if (!playlistUri) return;
-
-      const element = embedRef?.current;
-      if (!element) return;
-
-      const options: SpotifyEmbedOptions = {
-        theme: "light",
-        uri: playlistUri,
-      };
-
-      const callback = (EmbedController: SpotifyEmbedController) => {
-        // console.log("callback");
-      };
-
-      IFrameAPI.createController(element, options, callback);
-    };
-  }, [playlistUri]);
+  const { copied, onCopy } = useCopy(spotifyUrl);
 
   if (!playlistUri) return null;
 
   return (
-    <div>
-      <Script
-        src="https://open.spotify.com/embed/iframe-api/v1"
-        strategy="afterInteractive"
-      />
-      <div ref={embedRef} />
+    <div className="space-y-4">
+      <PlaylistEmbed uri={playlistUri} />
+      <div className="min-h-40 sm:min-h-32 border rounded-lg flex flex-col gap-1 p-4">
+        <p className="text-sm font-bold">You just made a playlist 🥳</p>
+        <div className="relative">
+          <span className="absolute left-1 top-1.5">🔗</span>
+          <input
+            type="url"
+            value={spotifyUrl}
+            readOnly
+            onClick={onCopy}
+            className="border border-gray-200 bg-gray-200/50 rounded w-full p-2 pl-6 text-xs cursor-pointer"
+          />
+          {copied && <p className="text-xs text-green-600 mt-1">Copied!</p>}
+        </div>
+        <button
+          className="mt-4 w-max text-xs hover:underline cursor-pointer"
+          onClick={reset}
+        >
+          Create a new playlist 🔄
+        </button>
+      </div>
     </div>
   );
 }

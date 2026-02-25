@@ -36,7 +36,7 @@ function ArtistPreview({ artist }: { artist: IArtist }) {
         className="object-cover w-10 h-10"
       />
       <p className="grow p-2 text-sm">{name}</p>
-      {isSelected && <i className="">✔️</i>}
+      {isSelected && <i className="pr-2">☑️</i>}
     </button>
   );
 }

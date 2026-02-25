@@ -1,13 +1,16 @@
-import { IArtist } from "@/types/artist";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { ICreatorContextProps } from "./types";
+import axios from "axios";
+import { IArtist } from "@/types/artist";
 import { ITrack } from "@/types/track";
 import generatePlaylistName from "@/utils/generatePlaylistName";
-import axios from "axios";
+import { ICreatorContextProps } from "./types";
+
+const MAX_ARTISTS = 20;
 
 const CreatorContext = createContext<ICreatorContextProps>({
   playlistUri: null,
   artists: [],
+  reset: () => {},
   selectArtist: () => {},
   deselectArtist: () => {},
   toggleArtist: () => {},
@@ -24,7 +27,17 @@ export function CreatorContextProvider({
   const [artists, setArtists] = useState<IArtist[]>([]);
   const [playlistUri, setPlaylistUri] = useState<string | null>(null);
 
+  function reset() {
+    setArtists([]);
+    setPlaylistUri(null);
+  }
+
   function selectArtist(artist: IArtist) {
+    if (artists.length > MAX_ARTISTS) {
+      console.warn("You can only select up to 20 artists");
+      return;
+    }
+
     setArtists((prev) => [...prev, artist]);
   }
 
@@ -85,6 +98,7 @@ export function CreatorContextProvider({
       value={{
         playlistUri,
         artists,
+        reset,
         selectArtist,
         deselectArtist,
         toggleArtist,

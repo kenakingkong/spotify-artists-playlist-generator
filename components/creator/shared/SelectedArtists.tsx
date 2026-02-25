@@ -8,7 +8,7 @@ export default function SelectedArtists() {
   if (!artists) return null;
 
   return (
-    <ul className="flex items-center gap-2">
+    <ul className="flex flex-wrap items-center gap-2">
       {artists.map((artist: IArtist) => (
         <li key={`selected-artists-${artist.id}`}>
           <ArtistPill artist={artist} />

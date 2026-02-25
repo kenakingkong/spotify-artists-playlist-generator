@@ -4,7 +4,7 @@ import SearchBar from "@/components/ui/SearchBar";
 
 import { useCreatorContext } from "../context";
 import ArtistsList from "./ArtistsList";
-import GeneratePlaylistButton from "./GeneratePlaylistBar";
+import GeneratePlaylistButton from "./GeneratePlaylistButton";
 import SelectedArtists from "./SelectedArtists";
 
 const DEBOUNCE_DELAY = 300;

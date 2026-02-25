@@ -10,9 +10,14 @@ const STATUSES = {
 
 export default function GeneratePlaylistButton() {
   const [status, setStatus] = useState<string>(STATUSES.idle);
-  const { generatePlaylist } = useCreatorContext();
+  const { artists, generatePlaylist } = useCreatorContext();
 
   function onSubmit() {
+    if (!artists.length) {
+      alert("Select 1 or more artists to create a playlist");
+      return;
+    }
+
     generatePlaylist(
       () => setStatus(STATUSES.success),
       () => setStatus(STATUSES.error),

@@ -14,6 +14,7 @@ export interface ISteps {
 export interface ICreatorContextProps {
   playlistUri: string | null;
   artists: IArtist[];
+  reset: () => void;
   selectArtist: (artist: IArtist) => void;
   deselectArtist: (artistId: string) => void;
   toggleArtist: (artist: IArtist) => void;
