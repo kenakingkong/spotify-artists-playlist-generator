@@ -2,9 +2,12 @@ import ErrorBoundary from "../ui/ErrorBoundary";
 import PlaylistEmbed from "../ui/PlaylistEmbed";
 
 const DEFAULT_PLAYLIST_URIS = [
-  "spotify:playlist:3GVTzTg6m8YrCmGlzMf3zP",
-  "spotify:playlist:3DGu8kYiiaqIdwCeyUZaLe?si=3dacb56b721e486c",
+  "spotify:playlist:6lJb9QkmsZg2mAkNzwXzmz",
+  "spotify:playlist:1rbomkz3hlS9QOzcmE2Cjq",
+  "spotify:playlist:4rlf35FNPmHK1XIlpVxAfA",
+  // "spotify:playlist: - 3.14 one" ,
 ];
+
 
 export default function Gallery() {
   return (

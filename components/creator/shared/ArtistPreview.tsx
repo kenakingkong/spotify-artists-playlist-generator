@@ -28,13 +28,19 @@ function ArtistPreview({ artist }: { artist: IArtist }) {
       )}
       onClick={onClick}
     >
-      <Image
-        src={coverImage.url}
-        alt={`${name} cover photo`}
-        height={40}
-        width={40}
-        className="object-cover w-10 h-10"
-      />
+      {coverImage?.url ? (
+        <Image
+          src={coverImage.url}
+          alt={`${name} cover photo`}
+          height={40}
+          width={40}
+          className="object-cover w-10 h-10"
+        />
+      ) : (
+        <div className="h-10 w-10 bg-gray-300 flex items-center justify-center">
+          <span>👤</span>
+        </div>
+      )}
       <p className="grow p-2 text-sm">{name}</p>
       {isSelected && <i className="pr-2">☑️</i>}
     </button>
