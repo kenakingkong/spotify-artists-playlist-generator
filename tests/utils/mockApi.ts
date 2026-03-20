@@ -11,7 +11,7 @@ export function createMockApi() {
   const jsonMock: jest.Mock = jest.fn().mockReturnThis();
   const sendMock: jest.Mock = jest.fn();
 
-  const req: Partial<NextApiRequest> = {};
+  const req: Partial<NextApiRequest> = { method: "POST" };
   const res: Partial<NextApiResponse> = {
     redirect: redirectMock,
     setHeader: setHeaderMock,

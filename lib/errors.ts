@@ -18,6 +18,9 @@ export const ERRORS = {
   MISSING_USER_ID: "Missing User ID",
   REQUIRE_PLAYLIST_NAME: "Playlist name is required",
   INVALID_TRACKS: "Invalid Track IDs",
+  INVALID_ARTISTS: "Invalid artist IDs",
+  NO_ARTISTS_PROVIDED: "At least one artist is required",
+  NO_TRACKS_FOUND: "No tracks found for the selected artists",
   RATE_LIMIT_EXCEEDED: "You've reached your daily playlist limit. Try again tomorrow.",
   NO_ARTISTS_SELECTED: "Select 1 or more artists to create a playlist",
 
