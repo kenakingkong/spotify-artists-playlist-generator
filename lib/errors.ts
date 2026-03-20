@@ -19,6 +19,7 @@ export const ERRORS = {
   REQUIRE_PLAYLIST_NAME: "Playlist name is required",
   INVALID_TRACKS: "Invalid Track IDs",
   RATE_LIMIT_EXCEEDED: "You've reached your daily playlist limit. Try again tomorrow.",
+  NO_ARTISTS_SELECTED: "Select 1 or more artists to create a playlist",
 
   USE_AUTH: "useAuth must be used within an AuthProvider",
   USE_TOAST: "useToast must be used within a ToastProvider"

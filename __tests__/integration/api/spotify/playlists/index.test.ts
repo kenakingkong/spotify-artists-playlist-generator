@@ -8,8 +8,7 @@ import handler from "@/pages/api/spotify/playlists";
 import { ERRORS } from "@/lib/errors";
 import { createMockApi } from "@/tests/utils/mockApi";
 import { MOCK_ACCESS_TOKEN } from "@/tests/utils/mockAuth";
-import { getPlaylistsCreatedTodayCount } from "@/lib/events/queries";
-import { trackPlaylistCreated } from "@/lib/events/track";
+import { getPlaylistsCreatedTodayCount, trackPlaylistCreated } from "@/lib/firebase/playlists";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -19,12 +18,9 @@ jest.mock("@/lib/spotify/auth", () => {
   return { withSpotifyAuth: mockWithSpotifyAuth };
 });
 
-jest.mock("@/lib/events/queries", () => ({
-  getPlaylistsCreatedTodayCount: jest.fn(),
-}));
-
-jest.mock("@/lib/events/track", () => ({
+jest.mock("@/lib/firebase/playlists", () => ({
   trackPlaylistCreated: jest.fn(),
+  getPlaylistsCreatedTodayCount: jest.fn(),
 }));
 
 const mockedGetCount = getPlaylistsCreatedTodayCount as jest.MockedFunction<
@@ -38,21 +34,12 @@ describe("/api/spotify/playlists", () => {
   beforeEach(() => {
     mockedGetCount.mockResolvedValue(0);
     mockedTrack.mockResolvedValue(undefined);
-  });
-
-  it("returns 400 if userId is missing", async () => {
-    const { req, res } = createMockApi();
-    req.body = { name: "My Playlist" };
-
-    await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: ERRORS.MISSING_USER_ID });
+    mockedAxios.get.mockResolvedValue({ data: { id: "123" } });
   });
 
   it("returns 400 if name is missing or empty", async () => {
     const { req, res } = createMockApi();
-    req.body = { userId: "123" };
+    req.body = {};
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 
@@ -64,7 +51,7 @@ describe("/api/spotify/playlists", () => {
     mockedGetCount.mockResolvedValue(5);
 
     const { req, res } = createMockApi();
-    req.body = { userId: "123", name: "My Playlist" };
+    req.body = { name: "My Playlist" };
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 
@@ -79,7 +66,6 @@ describe("/api/spotify/playlists", () => {
 
     const { req, res } = createMockApi();
     req.body = {
-      userId: "123",
       name: "My Playlist",
       description: "A description",
       artists: ["Artist A", "Artist B"],
@@ -94,7 +80,8 @@ describe("/api/spotify/playlists", () => {
       { name: "My Playlist", description: "A description", public: true },
       expect.any(Object)
     );
-    expect(mockedTrack).toHaveBeenCalledWith("123", {
+    expect(mockedTrack).toHaveBeenCalledWith({
+      userId: "123",
       playlistId: "playlist123",
       artists: ["Artist A", "Artist B"],
     });
@@ -105,7 +92,7 @@ describe("/api/spotify/playlists", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
     const { req, res } = createMockApi();
-    req.body = { userId: "123", name: "My Playlist" };
+    req.body = { name: "My Playlist" };
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 
@@ -116,7 +103,8 @@ describe("/api/spotify/playlists", () => {
       { name: "My Playlist", description: undefined, public: true },
       expect.any(Object)
     );
-    expect(mockedTrack).toHaveBeenCalledWith("123", {
+    expect(mockedTrack).toHaveBeenCalledWith({
+      userId: "123",
       playlistId: "playlist123",
       artists: [],
     });
@@ -126,7 +114,7 @@ describe("/api/spotify/playlists", () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("Network Error"));
 
     const { req, res } = createMockApi();
-    req.body = { userId: "123", name: "My Playlist" };
+    req.body = { name: "My Playlist" };
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 

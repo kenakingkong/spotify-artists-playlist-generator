@@ -163,7 +163,7 @@ Searches Spotify for artists by name.
 ## Spotify — Playlists
 
 ### `POST /api/spotify/playlists`
-Creates a new public Spotify playlist for the authenticated user. Rate limited to **5 playlists per day**.
+Creates a new public Spotify playlist for the authenticated user. Rate limited to **5 playlists per day** (tracked in Firebase).
 
 **Auth required:** Yes
 
@@ -213,16 +213,3 @@ Adds tracks to an existing playlist by URI.
 - `401` — not authenticated
 - `500` — failed to add tracks
 
----
-
-## Internal
-
-### `GET /api/ping`
-Health check endpoint. Pings the Supabase database to keep the connection alive.
-
-**Auth required:** No
-
-**Response:**
-```json
-{ "ok": true }
-```
