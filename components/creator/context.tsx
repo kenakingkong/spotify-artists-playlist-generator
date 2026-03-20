@@ -1,10 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import axios from "axios";
 import { IArtist } from "@/types/artist";
-import { ITrack } from "@/types/track";
-import generatePlaylistName from "@/utils/generatePlaylistName";
 import { ICreatorContextProps } from "./types";
-import generatePlaylistDescription from "@/utils/generatePlaylistDescription";
 
 export const MAX_ARTISTS = 10;
 
@@ -19,10 +16,8 @@ const CreatorContext = createContext<ICreatorContextProps>({
 });
 
 export function CreatorContextProvider({
-  userId,
   children,
 }: {
-  userId: string;
   children: ReactNode;
 }) {
   const [artists, setArtists] = useState<IArtist[]>([]);
@@ -56,34 +51,11 @@ export function CreatorContextProvider({
     onError?: (err: Error) => void,
   ) {
     try {
-      // get top tracks per artist
-      const artistTrackUris = await Promise.all(
-        artists.map(async (artist) => {
-          const { data } = await axios.get(
-            `/api/spotify/artists/${artist.id}/top-tracks`,
-          );
-          return data.data.tracks.map((track: ITrack) => track.uri);
-        }),
-      );
-
-      // create a playlist
-      const createPlaylistResponse = await axios.post(
-        "/api/spotify/playlists",
-        {
-          userId,
-          name: generatePlaylistName(artists.map((a) => a.name)),
-          description: generatePlaylistDescription(),
-          artists: artists.map((a) => a.name),
-        },
-      );
-      const { id: playlistId, uri } = createPlaylistResponse.data.data;
-
-      // add tracks to playlist
-      await axios.post(`/api/spotify/playlists/${playlistId}/tracks`, {
-        uris: Array.from(new Set(artistTrackUris.flat())),
+      const { data } = await axios.post("/api/spotify/playlists/generate", {
+        artists: artists.map((a) => ({ id: a.id, name: a.name })),
       });
 
-      setPlaylistUri(uri);
+      setPlaylistUri(data.data.uri);
       setArtists([]);
       onSuccess?.();
     } catch (err) {

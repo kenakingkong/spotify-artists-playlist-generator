@@ -9,7 +9,7 @@ export default function Creator() {
   if (!user?.id) return null;
 
   return (
-    <CreatorContextProvider userId={user.id}>
+    <CreatorContextProvider>
       <StepArtists />
       <StepPlaylist />
     </CreatorContextProvider>
