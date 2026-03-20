@@ -46,6 +46,7 @@ describe("/api/spotify/playlists/generate", () => {
     jest.clearAllMocks();
     mockedGetCount.mockResolvedValue(0);
     mockedTrack.mockResolvedValue(undefined);
+    mockedAxios.isAxiosError = jest.fn().mockReturnValue(false) as unknown as typeof axios.isAxiosError;
     // Profile fetch
     mockedAxios.get.mockResolvedValue({ data: { id: "user123" } });
   });
