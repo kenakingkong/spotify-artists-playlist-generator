@@ -9,7 +9,7 @@ import { ISpotifyTokenResponse } from "@/types/auth";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -36,7 +36,7 @@ export default async function handler(
   }
 
   const authHeader = `Basic ${Buffer.from(
-    `${clientId}:${clientSecret}`
+    `${clientId}:${clientSecret}`,
   ).toString("base64")}`;
 
   const headers = {
@@ -54,7 +54,7 @@ export default async function handler(
     const response = await axios.post<ISpotifyTokenResponse>(
       SPOTIFY_AUTH_ENDPOINTS.token,
       urlParams.toString(),
-      { headers }
+      { headers },
     );
 
     const { access_token, refresh_token, expires_in } = response.data;
@@ -63,17 +63,17 @@ export default async function handler(
       serialize(
         SPOTIFY_COOKIES.ACCESS_TOKEN,
         access_token,
-        getSpotifyCookieOptions(true, expires_in)
+        getSpotifyCookieOptions(true, expires_in),
       ),
       serialize(
         SPOTIFY_COOKIES.REFRESH_TOKEN,
         refresh_token ?? "",
-        getSpotifyCookieOptions(true)
+        getSpotifyCookieOptions(true),
       ),
       serialize(
         SPOTIFY_COOKIES.LOGGED_IN,
         "true",
-        getSpotifyCookieOptions(false)
+        getSpotifyCookieOptions(false),
       ),
     ]);
 

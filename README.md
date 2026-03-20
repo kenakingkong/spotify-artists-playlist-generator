@@ -13,23 +13,24 @@ https://community.spotify.com/t5/Content-Questions/How-to-create-a-Playlist-of-a
 
 ## Tech Stack
 
-### Next
-Next.js is a React framework that makes building fast, SEO-friendly, and scalable web apps easy by handling routing, rendering, and APIs out of the box.
+### Next 
+ Next.js is a React framework that makes building fast, SEO-friendly, and scalable web apps easy by handling routing, rendering, and APIs out of the box.
+ [🔗 Next docs](https://nextjs.org/docs)
 
-[🔗 Next documentation](https://nextjs.org/docs)
+### Firebase Realtime Database
+Firebase tracks playlist creation events and enforces the per-user rate limit (5 playlists/day, resets at UTC midnight).
+[🔗 Firebase docs](https://firebase.google.com/docs/database)
 
 ### Vercel
 Vercel hosts the Next.js frontend and serverless APIs, providing fast, scalable deployment for both UI and backend logic
-
-[🔗 Vercel documentation](https://vercel.com/docs/frameworks/full-stack/nextjs)
+[🔗 Vercel docs](https://vercel.com/docs/frameworks/full-stack/nextjs)
 
 ### Vercel Analytics
 Vercel Analytics tracks page views and user interactions with zero configuration
+[🔗 Vercel Analytics docs](https://vercel.com/docs/analytics)
 
-[🔗 Vercel Analytics documentation](https://vercel.com/docs/analytics)
 
-
-### Breakdown
+## App Structure
                 ┌─────────────────────────┐
                 │       App / Pages       │
                 └─────────────────────────┘
@@ -40,13 +41,14 @@ Vercel Analytics tracks page views and user interactions with zero configuration
                 |──────────────────────────|                    │
                 |  • Auth (via Spotify)    |                    ▼
                 |  • Spotify API           │   ┌─────────────────────────┐
-                └──────────────────────────┘   │       Supabase DB       │
+                └──────────────────────────┘   │       Firebase DB       │
                               │                │─────────────────────────│
-                              │                │  events table           │
-                              │                │    • event              │
-                              │                │    • user_id            │
-                              │                │    • payload            │
+                              │                │  playlists node         │
+                              │                │    • userId             │
+                              │                │    • playlistId         │
+                              │                │    • artists            │
                               │                │    • environment        │
+                              │                │    • timestamp          │
                               │                │                         │
                               │                │  rate limit: 5/day      │
                               │                │  (per user, resets UTC) │
@@ -85,6 +87,10 @@ Vercel Analytics tracks page views and user interactions with zero configuration
        │    • displays embedded Spotify playlists    │
        └─────────────────────────────────────────────┘
 
+
+## API Reference
+
+See [docs/api.md](docs/api.md) for full endpoint documentation.
 
 ## Get Started
 

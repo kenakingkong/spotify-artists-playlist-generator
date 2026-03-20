@@ -4,10 +4,12 @@ import axios from "axios";
 import { ERRORS } from "@/lib/errors";
 import { withSpotifyAuth } from "@/lib/spotify/auth";
 import { SPOTIFY_API_ENDPOINTS } from "@/lib/spotify/config";
-import { getPlaylistsCreatedTodayCount } from "@/lib/events/queries";
-import { trackPlaylistCreated } from "@/lib/events/track";
+import {
+  trackPlaylistCreated,
+  getPlaylistsCreatedTodayCount,
+} from "@/lib/firebase/playlists";
 
-const MAX_PLAYLISTS_PER_DAY = 5;
+const MAX_PLAYLISTS_PER_DAY = 3;
 
 async function POST(
   req: NextApiRequest,
@@ -25,6 +27,7 @@ async function POST(
       return res.status(400).json({ error: ERRORS.REQUIRE_PLAYLIST_NAME });
     }
 
+    // Check rate limit for playlist creation
     const count = await getPlaylistsCreatedTodayCount(userId);
     if (count >= MAX_PLAYLISTS_PER_DAY) {
       return res.status(429).json({ error: ERRORS.RATE_LIMIT_EXCEEDED });
@@ -32,12 +35,14 @@ async function POST(
 
     const endpoint = SPOTIFY_API_ENDPOINTS.userPlaylists(userId);
     const payload = { name, description, public: true };
+    const headers = { headers: { Authorization: `Bearer ${accessToken}` } };
 
-    const response = await axios.post(endpoint, payload, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    // Create playlist in Spotify
+    const response = await axios.post(endpoint, payload, headers);
 
-    void trackPlaylistCreated(userId, {
+    // Track playlist creation event in Firebase
+    trackPlaylistCreated({
+      userId: userId,
       playlistId: response.data.id,
       artists: artists ?? [],
     });

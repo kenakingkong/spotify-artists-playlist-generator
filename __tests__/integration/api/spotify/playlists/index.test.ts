@@ -8,8 +8,7 @@ import handler from "@/pages/api/spotify/playlists";
 import { ERRORS } from "@/lib/errors";
 import { createMockApi } from "@/tests/utils/mockApi";
 import { MOCK_ACCESS_TOKEN } from "@/tests/utils/mockAuth";
-import { getPlaylistsCreatedTodayCount } from "@/lib/events/queries";
-import { trackPlaylistCreated } from "@/lib/events/track";
+import { getPlaylistsCreatedTodayCount, trackPlaylistCreated } from "@/lib/firebase/playlists";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -19,12 +18,9 @@ jest.mock("@/lib/spotify/auth", () => {
   return { withSpotifyAuth: mockWithSpotifyAuth };
 });
 
-jest.mock("@/lib/events/queries", () => ({
-  getPlaylistsCreatedTodayCount: jest.fn(),
-}));
-
-jest.mock("@/lib/events/track", () => ({
+jest.mock("@/lib/firebase/playlists", () => ({
   trackPlaylistCreated: jest.fn(),
+  getPlaylistsCreatedTodayCount: jest.fn(),
 }));
 
 const mockedGetCount = getPlaylistsCreatedTodayCount as jest.MockedFunction<
@@ -94,7 +90,8 @@ describe("/api/spotify/playlists", () => {
       { name: "My Playlist", description: "A description", public: true },
       expect.any(Object)
     );
-    expect(mockedTrack).toHaveBeenCalledWith("123", {
+    expect(mockedTrack).toHaveBeenCalledWith({
+      userId: "123",
       playlistId: "playlist123",
       artists: ["Artist A", "Artist B"],
     });
@@ -116,7 +113,8 @@ describe("/api/spotify/playlists", () => {
       { name: "My Playlist", description: undefined, public: true },
       expect.any(Object)
     );
-    expect(mockedTrack).toHaveBeenCalledWith("123", {
+    expect(mockedTrack).toHaveBeenCalledWith({
+      userId: "123",
       playlistId: "playlist123",
       artists: [],
     });
