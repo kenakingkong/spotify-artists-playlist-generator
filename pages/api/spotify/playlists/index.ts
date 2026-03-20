@@ -17,15 +17,17 @@ async function POST(
   accessToken: string,
 ) {
   try {
-    const { userId, name, description, artists } = req.body;
-
-    if (!userId) {
-      return res.status(400).json({ error: ERRORS.MISSING_USER_ID });
-    }
+    const { name, description, artists } = req.body;
 
     if (!name?.trim()) {
       return res.status(400).json({ error: ERRORS.REQUIRE_PLAYLIST_NAME });
     }
+
+    const authHeaders = { headers: { Authorization: `Bearer ${accessToken}` } };
+
+    // Get userId from Spotify token — never trust the request body
+    const profileResponse = await axios.get(SPOTIFY_API_ENDPOINTS.profile, authHeaders);
+    const userId: string = profileResponse.data.id;
 
     // Check rate limit for playlist creation
     const count = await getPlaylistsCreatedTodayCount(userId);
@@ -35,14 +37,13 @@ async function POST(
 
     const endpoint = SPOTIFY_API_ENDPOINTS.userPlaylists(userId);
     const payload = { name, description, public: true };
-    const headers = { headers: { Authorization: `Bearer ${accessToken}` } };
 
     // Create playlist in Spotify
-    const response = await axios.post(endpoint, payload, headers);
+    const response = await axios.post(endpoint, payload, authHeaders);
 
     // Track playlist creation event in Firebase
-    trackPlaylistCreated({
-      userId: userId,
+    await trackPlaylistCreated({
+      userId,
       playlistId: response.data.id,
       artists: artists ?? [],
     });

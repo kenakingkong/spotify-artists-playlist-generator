@@ -21,6 +21,7 @@ export default function GeneratePlaylistButton() {
       return;
     }
 
+    setStatus(STATUSES.loading);
     generatePlaylist(
       () => setStatus(STATUSES.success),
       (err) => {

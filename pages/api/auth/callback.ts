@@ -32,7 +32,7 @@ export default async function handler(
   }
 
   if (!code) {
-    res.status(400).json({ error: ERRORS.MISSING_AUTH_CODE });
+    return res.status(400).json({ error: ERRORS.MISSING_AUTH_CODE });
   }
 
   const authHeader = `Basic ${Buffer.from(

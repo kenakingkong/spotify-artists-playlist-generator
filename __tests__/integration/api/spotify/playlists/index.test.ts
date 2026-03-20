@@ -34,21 +34,12 @@ describe("/api/spotify/playlists", () => {
   beforeEach(() => {
     mockedGetCount.mockResolvedValue(0);
     mockedTrack.mockResolvedValue(undefined);
-  });
-
-  it("returns 400 if userId is missing", async () => {
-    const { req, res } = createMockApi();
-    req.body = { name: "My Playlist" };
-
-    await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: ERRORS.MISSING_USER_ID });
+    mockedAxios.get.mockResolvedValue({ data: { id: "123" } });
   });
 
   it("returns 400 if name is missing or empty", async () => {
     const { req, res } = createMockApi();
-    req.body = { userId: "123" };
+    req.body = {};
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 
@@ -60,7 +51,7 @@ describe("/api/spotify/playlists", () => {
     mockedGetCount.mockResolvedValue(5);
 
     const { req, res } = createMockApi();
-    req.body = { userId: "123", name: "My Playlist" };
+    req.body = { name: "My Playlist" };
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 
@@ -75,7 +66,6 @@ describe("/api/spotify/playlists", () => {
 
     const { req, res } = createMockApi();
     req.body = {
-      userId: "123",
       name: "My Playlist",
       description: "A description",
       artists: ["Artist A", "Artist B"],
@@ -102,7 +92,7 @@ describe("/api/spotify/playlists", () => {
     mockedAxios.post.mockResolvedValueOnce({ data: mockResponse });
 
     const { req, res } = createMockApi();
-    req.body = { userId: "123", name: "My Playlist" };
+    req.body = { name: "My Playlist" };
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 
@@ -124,7 +114,7 @@ describe("/api/spotify/playlists", () => {
     mockedAxios.post.mockRejectedValueOnce(new Error("Network Error"));
 
     const { req, res } = createMockApi();
-    req.body = { userId: "123", name: "My Playlist" };
+    req.body = { name: "My Playlist" };
 
     await handler(req as NextApiRequest, res as NextApiResponse, MOCK_ACCESS_TOKEN);
 
