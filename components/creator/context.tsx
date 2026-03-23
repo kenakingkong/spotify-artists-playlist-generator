@@ -23,7 +23,7 @@ export function CreatorContextProvider({
   children: ReactNode;
 }) {
   const [artists, setArtists] = useState<IArtist[]>([]);
-  const [playlistUri, setPlaylistUri] = useState<string | null>(null);
+  const [playlistUri, setPlaylistUri] = useState<string | null>("spotify:playlist:5OnsJdPej9pBUomHvziK83");
 
   function reset() {
     setArtists([]);

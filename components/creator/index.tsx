@@ -15,7 +15,7 @@ export default function Creator() {
   return (
     <CreatorContextProvider onReset={() => setResetCount((c) => c + 1)}>
       <StepArtists key={`${key}-step-artists`} />
-      <StepPlaylist />
+      <StepPlaylist key={`${key}-step-playlist`} />
     </CreatorContextProvider>
   );
 }

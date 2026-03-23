@@ -1,10 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import {
   SpotifyEmbedController,
   SpotifyEmbedOptions,
   SpotifyIFrameAPI,
 } from "@/types/spotify";
+import classNames from "classnames";
+
+const REVEAL_DELAY = 3000;
 
 let cachedAPI: SpotifyIFrameAPI | null = null;
 const pendingCallbacks: Array<(api: SpotifyIFrameAPI) => void> = [];
@@ -31,6 +34,16 @@ export default function PlaylistEmbed({
   callback?: (c: SpotifyEmbedController) => void;
 }) {
   const embedRef = useRef<HTMLDivElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  const playlistId = uri.split(":").slice(-1)[0];
+  const spotifyUrl = `https://open.spotify.com/playlist/${playlistId}`;
+
+  useEffect(() => {
+    setVisible(false);
+    const timer = setTimeout(() => setVisible(true), REVEAL_DELAY);
+    return () => clearTimeout(timer);
+  }, [uri]);
 
   useEffect(() => {
     registerEmbed((api) => {
@@ -49,12 +62,28 @@ export default function PlaylistEmbed({
   }, [uri]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div>
+    <div className="w-[560px] h-[352px] rounded-xl bg-gray-100 overflow-hidden">
       <Script
         src="https://open.spotify.com/embed/iframe-api/v1"
         strategy="afterInteractive"
       />
-      <div ref={embedRef} />
+      {!visible && (
+        <div className="w-full h-full flex flex-col items-center justify-center gap-1">
+          <p className="text-sm text-gray-600">Loading preview</p>
+          <a
+            href={spotifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-xs text-gray-500 hover:underline"
+          >
+            {spotifyUrl}
+          </a>
+        </div>
+      )}
+      <div
+        ref={embedRef}
+        className={classNames(!visible && "invisible h-0 overflow-hidden")}
+      />
     </div>
   );
 }

@@ -15,7 +15,6 @@ export default function StepPlaylist() {
 
   return (
     <div className="space-y-4">
-      <PlaylistEmbed uri={playlistUri} />
       <div className="min-h-40 sm:min-h-32 border rounded-lg flex flex-col gap-1 p-4">
         <p className="text-sm font-bold">You just made a playlist 🥳</p>
         <div className="relative">
@@ -36,6 +35,7 @@ export default function StepPlaylist() {
           Create a new playlist 🔄
         </button>
       </div>
+      <PlaylistEmbed uri={playlistUri} />
     </div>
   );
 }
