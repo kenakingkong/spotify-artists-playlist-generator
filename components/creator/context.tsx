@@ -16,8 +16,10 @@ const CreatorContext = createContext<ICreatorContextProps>({
 });
 
 export function CreatorContextProvider({
+  onReset,    
   children,
 }: {
+  onReset: () => void;
   children: ReactNode;
 }) {
   const [artists, setArtists] = useState<IArtist[]>([]);
@@ -26,6 +28,7 @@ export function CreatorContextProvider({
   function reset() {
     setArtists([]);
     setPlaylistUri(null);
+    onReset();
   }
 
   function selectArtist(artist: IArtist) {
