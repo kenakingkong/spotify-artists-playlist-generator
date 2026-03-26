@@ -12,18 +12,16 @@ export default function SelectedArtists() {
   if (!artists) return null;
 
   return (
-    <div className="space-y-1">
-      {!!totalArtists && (
-        <span
-          role="alert"
-          className={classNames(
-            isAtLimit ? "text-red-600" : "text-black",
-            "block text-xs",
-          )}
-        >
-          Selected {totalArtists}/{MAX_ARTISTS} artists.
-        </span>
-      )}
+    <div className="space-y-[10px] pt-[10px]">
+      <span
+        role="alert"
+        className={classNames(
+          isAtLimit ? "text-app-pink" : "text-black",
+          "block text-sm font-medium",
+        )}
+      >
+        Selected {totalArtists}/{MAX_ARTISTS} artists.
+      </span>
       <ul className="flex flex-wrap items-center gap-2">
         {artists.map((artist: IArtist) => (
           <li key={`selected-artists-${artist.id}`}>

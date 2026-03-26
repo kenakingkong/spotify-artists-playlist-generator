@@ -23,9 +23,9 @@ function ArtistPreview({ artist }: { artist: IArtist }) {
       type="button"
       value={uri}
       className={classNames(
-        "w-full rounded border overflow-hidden flex items-center text-left cursor-pointer",
+        "w-full border overflow-hidden flex items-center text-left cursor-pointer",
         "transition-all hover:scale-[101%]",
-        isSelected && "bg-gray-200/50",
+        isSelected && "bg-app-black/10",
       )}
       onClick={onClick}
       disabled={isAtLimit && !isSelected}

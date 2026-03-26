@@ -1,3 +1,4 @@
+import Head from "next/head";
 import SignOutButton from "@/components/auth/SignOutButton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/router";
@@ -26,5 +27,13 @@ export default function Logout() {
     };
   }, [router, logout]);
 
-  return <SignOutButton />;
+  return (
+    <>
+      <Head>
+        <title>Sign Out | Setlists</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
+      <SignOutButton />
+    </>
+  );
 }

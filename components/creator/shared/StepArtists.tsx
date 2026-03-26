@@ -6,6 +6,7 @@ import { useCreatorContext } from "../context";
 import ArtistsList from "./ArtistsList";
 import GeneratePlaylistButton from "./GeneratePlaylistButton";
 import SelectedArtists from "./SelectedArtists";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 const DEBOUNCE_DELAY = 300;
 
@@ -40,31 +41,38 @@ export default function StepArtists() {
   if (playlistUri) return null;
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-1">
-        <SearchBar
-          id="search-artists"
-          placeholder="search any artist..."
-          onChange={onChange}
-        />
-        <ArtistsList
-          id="searched-artists"
-          artists={searchedArtists}
-          isLoading={queryArtistsData.isLoading}
-          error={queryArtistsData.error}
-        />
-        {!query && topArtists && (
+    <div>
+      <SectionHeader>Add artists</SectionHeader>
+      <SearchBar
+        id="search-artists"
+        placeholder="search any artist..."
+        onChange={onChange}
+      />
+      <div className="grid lg:grid-cols-2 lg:gap-[10px]">
+        <div className="space-y-[5px]">
           <ArtistsList
-            id="top-artists"
-            artists={topArtistsData.data?.data?.items || []}
-            isLoading={topArtistsData.isLoading}
-            error={topArtistsData.error}
+            id="searched-artists"
+            artists={searchedArtists}
+            isLoading={queryArtistsData.isLoading}
+            error={queryArtistsData.error}
           />
-        )}
-      </div>
-      <div className="border-t pt-4 space-y-2">
-        <SelectedArtists />
-        <GeneratePlaylistButton />
+          {!query && topArtists && (
+            <ArtistsList
+              id="top-artists"
+              artists={topArtistsData.data?.data?.items || []}
+              isLoading={topArtistsData.isLoading}
+              error={topArtistsData.error}
+            />
+          )}
+        </div>
+        <div className="h-full p-[10px] lg:px-0">
+          <div className="h-full flex flex-col justify-between lg:border border-app-black space-y-[10px]">
+            <div className="lg:p-[10px]">
+              <SelectedArtists />
+            </div>
+            <GeneratePlaylistButton />
+          </div>
+        </div>
       </div>
     </div>
   );
