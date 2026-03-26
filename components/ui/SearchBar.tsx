@@ -11,10 +11,7 @@ export default function SearchBar(
     <input
       {...props}
       type="search"
-      className={classNames(
-        "w-full p-2 rounded border border-black/30 bg-black/5 focus:border-black/50 ring-black/50 text-sm",
-        props.className
-      )}
+      className={classNames("input p-[10px]", props.className)}
     />
   );
 }

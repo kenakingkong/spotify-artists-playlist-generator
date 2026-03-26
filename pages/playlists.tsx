@@ -1,4 +1,4 @@
-import Gallery from "@/components/gallery";
+import Gallery from "@/components/home/gallery";
 
 export default function Login() {
   return <Gallery />;

@@ -15,13 +15,17 @@ interface IArtistsListProps {
 
 function ArtistsList({ id, artists, isLoading, error }: IArtistsListProps) {
   if (error) {
-    return <ErrorMessage />;
+    return (
+      <div className="p-[10px] lg:px-0">
+        <ErrorMessage />
+      </div>
+    );
   }
 
   if (isLoading) {
     return (
-      <ul className="space-y-1">
-        {[1, 2, 3].map((num: number) => (
+      <ul className="space-y-[5px] p-[10px] lg:px-0">
+        {Array.from({ length: 10 }).map((_, num) => (
           <li key={`loading-artist-${num}`}>
             <ArtistLoadingSkeleton />
           </li>
@@ -35,11 +39,15 @@ function ArtistsList({ id, artists, isLoading, error }: IArtistsListProps) {
   }
 
   if (!artists.length) {
-    return <GentleMessage>Try a different search</GentleMessage>;
+    return (
+      <div className="p-[10px] lg:px-0">
+        <GentleMessage>Try a different search</GentleMessage>
+      </div>
+    );
   }
 
   return (
-    <ul className="space-y-1">
+    <ul className="space-y-[5px] p-[10px] lg:px-0">
       {artists.map((artist: IArtist) => (
         <li key={`${id}-${artist.id}`}>
           <ArtistPreview artist={artist} />

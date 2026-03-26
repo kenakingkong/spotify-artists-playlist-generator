@@ -7,8 +7,6 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function Home() {
   const { isAuthenticated } = useAuth();
 
-  if (isAuthenticated) return <Creator />;
-
   return (
     <div className="bg-app-gray">
       <Hero isAuthenticated={isAuthenticated} />

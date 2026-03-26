@@ -18,12 +18,12 @@ function ArtistPill({ artist }: { artist: IArtist }) {
       type="button"
       value={uri}
       className={classNames(
-        "p-1 w-max rounded border overflow-hidden flex items-center gap-2.5 text-left cursor-pointer",
-        "bg-gray-200/50 transition-all hover:scale-[101%]",
+        "p-[5px] w-max border overflow-hidden flex items-center gap-2.5 text-left cursor-pointer",
+        "bg-app-black/10 transition-all hover:scale-[101%]",
       )}
       onClick={onClick}
     >
-      <span className="text-xs">{name}</span>
+      <span className="text-sm">{name}</span>
       <span className="text-[10px] font-bold">🅇</span>
     </button>
   );

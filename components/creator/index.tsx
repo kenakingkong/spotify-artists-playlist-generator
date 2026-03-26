@@ -13,9 +13,11 @@ export default function Creator() {
   if (!user?.id) return null;
 
   return (
-    <CreatorContextProvider onReset={() => setResetCount((c) => c + 1)}>
-      <StepArtists key={`${key}-step-artists`} />
-      <StepPlaylist key={`${key}-step-playlist`} />
-    </CreatorContextProvider>
+    <div className="w-full max-w-[1000px] mx-auto">
+      <CreatorContextProvider onReset={() => setResetCount((c) => c + 1)}>
+        <StepArtists key={`${key}-step-artists`} />
+        <StepPlaylist key={`${key}-step-playlist`} />
+      </CreatorContextProvider>
+    </div>
   );
 }

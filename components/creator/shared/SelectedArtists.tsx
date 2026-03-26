@@ -12,13 +12,13 @@ export default function SelectedArtists() {
   if (!artists) return null;
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-[10px] pt-[10px]">
       {!!totalArtists && (
         <span
           role="alert"
           className={classNames(
-            isAtLimit ? "text-red-600" : "text-black",
-            "block text-xs",
+            isAtLimit ? "text-app-pink" : "text-black",
+            "block text-sm font-medium",
           )}
         >
           Selected {totalArtists}/{MAX_ARTISTS} artists.

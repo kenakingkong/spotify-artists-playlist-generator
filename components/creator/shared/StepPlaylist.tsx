@@ -1,6 +1,7 @@
 import PlaylistEmbed from "@/components/ui/PlaylistEmbed";
 import { useCreatorContext } from "../context";
 import useCopy from "@/hooks/useCopy";
+import SectionHeader from "@/components/ui/SectionHeader";
 
 export default function StepPlaylist() {
   const { playlistUri, reset } = useCreatorContext();
@@ -14,28 +15,32 @@ export default function StepPlaylist() {
   if (!playlistUri) return null;
 
   return (
-    <div className="space-y-4">
-      <div className="border rounded-lg flex flex-col gap-1 p-4">
-        <p className="text-sm font-bold">You just made a playlist 🥳</p>
+    <div>
+      <SectionHeader>Your setlist</SectionHeader>
+      <div className="space-y-[20px] pb-[20px]">
         <div className="relative">
-          <span className="absolute left-1 top-1.5">🔗</span>
+          <span className="absolute left-2 top-2">🔗</span>
           <input
             type="url"
             value={spotifyUrl}
             readOnly
             onClick={onCopy}
-            className="border border-gray-200 bg-gray-200/50 rounded w-full p-2 pl-6 text-xs cursor-pointer"
+            className="input p-[10px] pl-[30px] pr-0"
           />
           {copied && <p className="text-xs text-green-600 mt-1">Copied!</p>}
         </div>
+        <div className="px-[10px] lg:px-0">
+          <PlaylistEmbed uri={playlistUri} />
+        </div>
+        <div className="px-[10px] lg:px-0">
+          <button
+            className="w-full lg:w-max button button-pink"
+            onClick={reset}
+          >
+            Create a new playlist 🔄
+          </button>
+        </div>
       </div>
-      <PlaylistEmbed uri={playlistUri} />
-      <button
-        className="button"
-        onClick={reset}
-      >
-        Create a new playlist 🔄
-      </button>
     </div>
   );
 }

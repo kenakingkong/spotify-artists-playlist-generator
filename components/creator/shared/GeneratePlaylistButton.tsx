@@ -34,11 +34,11 @@ export default function GeneratePlaylistButton() {
   }
 
   return (
-    <button className="button" onClick={onSubmit}>
+    <button className="w-full button button-pink" onClick={onSubmit}>
       {status === STATUSES.loading ? (
         <span>creating...</span>
       ) : (
-        <span>create playlist</span>
+        <span>create playlist ➡️</span>
       )}
     </button>
   );

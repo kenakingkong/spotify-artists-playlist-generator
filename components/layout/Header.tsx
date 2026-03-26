@@ -12,18 +12,10 @@ export default function Header() {
   }, []);
 
   return (
-    <nav className="flex items-center justify-between gap-4">
+    <nav className="w-full max-w-[1000px] mx-auto flex items-center justify-between gap-[5px]">
       <div className="flex justify-between gap-2">
-        <p className="text-xs">
-          <span className="text-green-600 font-bold">Setlist maker</span> by{" "}
-          <a
-            href="https://makenakong.com"
-            target="_blank"
-            className="underline hover:text-green-600"
-          >
-            Makena Kong
-          </a>{" "}
-          👩🏻‍💻
+        <p className="text-sm text-app-gray ">
+          SETLISTS BY MAKENA KONG
         </p>
       </div>
       {mounted && isAuthenticated && (

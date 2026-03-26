@@ -62,7 +62,7 @@ export default function PlaylistEmbed({
   }, [uri]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="w-[560px] h-[352px] rounded-xl bg-gray-100 overflow-hidden">
+    <div className="w-full h-[352px] bg-app-dark-gray overflow-hidden">
       <Script
         src="https://open.spotify.com/embed/iframe-api/v1"
         strategy="afterInteractive"
