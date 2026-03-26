@@ -24,7 +24,7 @@ export default function Gallery() {
   return (
     <div className="w-full max-w-[1000px] mx-auto grid lg:grid-cols-2 lg:mt-[20px]">
       <div>
-        <SectionHeader>Featured Playlists [{totalPlaylists}]</SectionHeader>
+        <SectionHeader>Featured [{totalPlaylists}]</SectionHeader>
         <ul>
           {Object.entries(DEFAULT_PLAYLISTS).map(([uri, name], index) => (
             <li

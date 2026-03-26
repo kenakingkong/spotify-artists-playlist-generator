@@ -1,6 +1,7 @@
 import SignOutButton from "@/components/auth/SignOutButton";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Header() {
@@ -13,11 +14,12 @@ export default function Header() {
 
   return (
     <nav className="w-full max-w-[1000px] mx-auto flex items-center justify-between gap-[5px]">
-      <div className="flex justify-between gap-2">
+      <Link href="/home" className="flex justify-between gap-2">
+        <Image src="/setlists-logo.png" alt="setlists logo" height={20} width={20} className="bg-white" />
         <p className="text-sm text-app-gray ">
-          SETLISTS BY MAKENA KONG
+          SETLISTS
         </p>
-      </div>
+      </Link>
       {mounted && isAuthenticated && (
         <div className="flex items-center gap-1">
           {user?.image ? (

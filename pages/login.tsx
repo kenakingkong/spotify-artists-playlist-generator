@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -12,5 +13,13 @@ export default function Login() {
     if (isAuthenticated) router.push("/");
   }, [isAuthenticated, router]);
 
-  return <SignInButton />;
+  return (
+    <>
+      <Head>
+        <title>Sign In | Setlists</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
+      <SignInButton />
+    </>
+  );
 }

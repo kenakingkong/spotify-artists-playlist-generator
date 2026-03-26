@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Creator from "@/components/creator";
 import Bars from "@/components/home/bars";
 import Gallery from "@/components/home/gallery";
@@ -9,20 +10,24 @@ export default function Home() {
 
   if (isAuthenticated) return <Creator />;
 
+  const title = "Setlists | Create a Spotify Playlist from Your Favorite Artists";
+  const description = "The free Spotify playlist generator for concert and festival prep. Pick up to 10 artists, get all their top tracks in one playlist. Try it free.";
+
   return (
     <div className="bg-app-gray">
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlist.makenakong.com"} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlist.makenakong.com"} />
+      </Head>
       <Hero isAuthenticated={isAuthenticated} />
       <Bars />
       <Gallery />
-      <div className="w-full max-w-[1000px] mx-auto p-[10px] py-[20px] text-sm lg:mt-[20px]">
-        <p>I made this app because I needed to quickly generate playlists for sets where I didn’t know all the djs.</p>
-        <br />
-        <p>
-          <a href="https://makenakong.com" target="_blank" rel="noopener noreferrer" className="link">makenakong.com</a>
-          |
-          <a href="https://github.com/kenakingkong/spotify-artists-playlist-generator" target="_blank" rel="noopener noreferrer" className="link">github repo</a>
-        </p>
-      </div>
     </div>
   );
 }
