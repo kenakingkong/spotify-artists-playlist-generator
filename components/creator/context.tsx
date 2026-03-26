@@ -16,16 +16,19 @@ const CreatorContext = createContext<ICreatorContextProps>({
 });
 
 export function CreatorContextProvider({
+  onReset,    
   children,
 }: {
+  onReset: () => void;
   children: ReactNode;
 }) {
   const [artists, setArtists] = useState<IArtist[]>([]);
-  const [playlistUri, setPlaylistUri] = useState<string | null>(null);
+  const [playlistUri, setPlaylistUri] = useState<string | null>("spotify:playlist:5OnsJdPej9pBUomHvziK83");
 
   function reset() {
     setArtists([]);
     setPlaylistUri(null);
+    onReset();
   }
 
   function selectArtist(artist: IArtist) {

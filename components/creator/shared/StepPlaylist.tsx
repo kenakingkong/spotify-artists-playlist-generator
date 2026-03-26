@@ -15,8 +15,7 @@ export default function StepPlaylist() {
 
   return (
     <div className="space-y-4">
-      <PlaylistEmbed uri={playlistUri} />
-      <div className="min-h-40 sm:min-h-32 border rounded-lg flex flex-col gap-1 p-4">
+      <div className="border rounded-lg flex flex-col gap-1 p-4">
         <p className="text-sm font-bold">You just made a playlist 🥳</p>
         <div className="relative">
           <span className="absolute left-1 top-1.5">🔗</span>
@@ -29,13 +28,14 @@ export default function StepPlaylist() {
           />
           {copied && <p className="text-xs text-green-600 mt-1">Copied!</p>}
         </div>
-        <button
-          className="mt-4 w-max text-xs hover:underline cursor-pointer"
-          onClick={reset}
-        >
-          Create a new playlist 🔄
-        </button>
       </div>
+      <PlaylistEmbed uri={playlistUri} />
+      <button
+        className="button"
+        onClick={reset}
+      >
+        Create a new playlist 🔄
+      </button>
     </div>
   );
 }
