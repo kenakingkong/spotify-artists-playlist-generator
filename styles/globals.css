@@ -95,23 +95,23 @@ body {
 
 /* Toast base styles */
 .toast {
-  @apply py-2.5 px-3 rounded-xs shadow-lg w-3xs max-w-screen text-base;
+  @apply py-[10px] px-[20px] w-xs max-w-screen text-base;
 }
 
 .toast[data-type="success"] {
-  @apply bg-emerald-500 text-white;
+  @apply bg-emerald-500 text-white border border-app-black font-mono;
 }
 
 .toast[data-type="error"] {
-  @apply bg-red-500 text-white;
+  @apply bg-red-500 text-white border border-app-black font-mono;
 }
 
 .toast[data-type="warning"] {
-  @apply bg-amber-500 text-white;
+  @apply bg-amber-500 text-white border border-app-black font-mono;
 }
 
 .toast[data-type="info"] {
-  @apply bg-slate-500 text-white;
+  @apply bg-slate-500 text-white border border-app-black font-mono;
 }
 
 /* Toast progress bar animation */

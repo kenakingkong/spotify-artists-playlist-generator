@@ -16,7 +16,7 @@ export default function Toast({ toast, onClose }: IToastProps) {
     >
       {/* Content */}
       <div className="w-full flex items-center gap-2">
-        <p className="flex-1 text-xs/3.5 line-clamp-2">{message}</p>
+        <p className="flex-1 line-clamp-2">{message}</p>
         <button
           onClick={() => onClose(id)}
           className="hover:opacity-70 transition-opacity leading-[100%] cursor-pointer"
