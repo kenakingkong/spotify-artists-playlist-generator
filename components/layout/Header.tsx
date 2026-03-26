@@ -21,7 +21,7 @@ export default function Header() {
       {mounted && isAuthenticated && (
         <div className="flex items-center gap-1">
           {user?.image ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-[20px]">
               <SignOutButton />
               <Image
                 src={user?.image?.url}

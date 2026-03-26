@@ -2,7 +2,7 @@ import SignInButton from "../auth/SignInButton";
 
 export default function Hero({ isAuthenticated = false }) {
   return (
-    <div className="w-full max-w-[1000px] mx-auto p-[10px] py-[50px] flex flex-col lg:flex-row lg:items-center justify-center lg:justify-between gap-[40px]">
+    <div className="w-full max-w-[1000px] mx-auto p-[10px] lg:px-0 py-[50px] flex flex-col lg:flex-row lg:items-center justify-center lg:justify-between gap-[40px]">
       <div className="space-y-[20px] max-w-[500px]">
         <h1 className="text-7xl lg:text-8xl font-black">
           <span className="block">CREATE A</span>
