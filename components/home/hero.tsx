@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SignInButton from "../auth/SignInButton";
 
 export default function Hero({ isAuthenticated = false }) {
@@ -14,7 +15,7 @@ export default function Hero({ isAuthenticated = false }) {
       </div>
       {isAuthenticated ? (
         <div>
-          <a href="/" className="button button-pink">Create a setlist ➡️</a>
+          <Link href="/" className="button button-pink">Create a setlist ➡️</Link>
         </div>
       ) : (
         <div className="space-y-[10px]">

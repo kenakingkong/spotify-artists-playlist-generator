@@ -20,14 +20,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <header className={classNames("w-full bg-app-black p-[10px] lg:py-[20px]", classes)}>
         <Header />
       </header>
-      <main className={classes}>{children}</main>
+      <main className={classNames("flex-1", classes)}>{children}</main>
       <footer className={classNames("w-full bg-app-black p-[10px] lg:py-[20px]", classes)}>
         <Footer />
       </footer>
-    </>
+    </div>
   );
 }

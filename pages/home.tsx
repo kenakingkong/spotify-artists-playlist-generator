@@ -1,4 +1,3 @@
-import Creator from "@/components/creator";
 import Bars from "@/components/home/bars";
 import Gallery from "@/components/home/gallery";
 import Hero from "@/components/home/hero";

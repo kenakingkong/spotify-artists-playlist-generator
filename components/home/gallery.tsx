@@ -17,7 +17,8 @@ export default function Gallery() {
   const [selectedPlaylistUri, setSelectedPlaylistUri] = useState<string | null>(null);
 
   function selectPlaylist(event: React.MouseEvent<HTMLButtonElement>) {
-    setSelectedPlaylistUri(event.currentTarget.value);
+    const uri = event.currentTarget.value;
+    setSelectedPlaylistUri(prev => prev === uri ? null : uri);
   }
 
   return (
@@ -31,7 +32,7 @@ export default function Gallery() {
               className="border-b border-app-black"
             >
               <button
-                className="group flex items-center text-left cursor-pointer"
+                className="group flex items-center text-left cursor-pointer w-full"
                 value={uri}
                 onClick={selectPlaylist}
                 data-selected={selectedPlaylistUri === uri}
@@ -43,17 +44,29 @@ export default function Gallery() {
                   {name}
                 </p>
               </button>
+              {selectedPlaylistUri === uri && (
+                <div className="lg:hidden">
+                  <ErrorBoundary>
+                    <PlaylistEmbed key={uri} uri={uri} />
+                  </ErrorBoundary>
+                </div>
+              )}
             </li>
           ))}
         </ul>
       </div>
       <div className="hidden lg:block">
         <ErrorBoundary>
-          {selectedPlaylistUri &&
+          {selectedPlaylistUri ? (
             <PlaylistEmbed
               key={selectedPlaylistUri}
               uri={selectedPlaylistUri}
             />
+          ) : (
+            <div className="border border-app-black h-full p-[10px] flex items-center justify-center">
+              ⬅️ Select a playlist to play
+            </div>
+          )
           }
         </ErrorBoundary>
       </div>

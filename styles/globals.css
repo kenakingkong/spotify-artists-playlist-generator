@@ -36,7 +36,7 @@ body {
    ======================== */
 
 .button {
-  @apply border py-[5px] px-[20px] text-base font-medium flex items-center justify-center gap-[5px] cursor-pointer;
+  @apply border py-[5px] px-[20px] text-base font-medium flex items-center justify-center gap-[10px] cursor-pointer;
 }
 
 .button-spotify {
