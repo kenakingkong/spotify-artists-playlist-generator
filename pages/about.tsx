@@ -22,7 +22,7 @@ export default function About() {
         />
         <link
           rel="canonical"
-          href={`${process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlist.makenakong.com"}/about`}
+          href={`${process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlists.makenakong.com"}/about`}
         />
       </Head>
       <div className="w-full max-w-[700px] mx-auto p-[10px] py-[50px] space-y-[20px]">

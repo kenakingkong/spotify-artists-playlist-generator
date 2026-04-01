@@ -20,10 +20,10 @@ export default function Home() {
         <meta name="description" content={description} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlist.makenakong.com"} />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlists.makenakong.com"} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlist.makenakong.com"} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlists.makenakong.com"} />
       </Head>
       <Hero isAuthenticated={isAuthenticated} />
       <Bars />

@@ -6,7 +6,7 @@ import { ToastProvider } from "@/contexts/ToastContext";
 import { Analytics } from "@vercel/analytics/next";
 import "@/styles/globals.css";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlist.makenakong.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlists.makenakong.com";
 const SITE_NAME = "Setlists";
 const DEFAULT_DESCRIPTION = "The free Spotify playlist generator for concert and festival prep. Pick up to 10 artists, get all their top tracks in one playlist. Try it free.";
 

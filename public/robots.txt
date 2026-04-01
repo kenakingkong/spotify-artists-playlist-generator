@@ -6,4 +6,4 @@ Disallow: /logout
 Disallow: /playlists
 Disallow: /api/
 
-Sitemap: https://setlist.makenakong.com/api/sitemap.xml
+Sitemap: https://setlists.makenakong.com/api/sitemap.xml

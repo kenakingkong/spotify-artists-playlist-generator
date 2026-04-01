@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlist.makenakong.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://setlists.makenakong.com";
 
 const pages = [
   { path: "/", priority: "1.0", changefreq: "weekly" },
